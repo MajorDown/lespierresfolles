@@ -1,0 +1,93 @@
+/* font-family: 'Laila', sans-serif;
+font-family: 'Mynerve', cursive; */
+@import url('https://fonts.googleapis.com/css2?family=Laila:wght@500&family=Mynerve&display=swap');
+
+:root {
+    --color1: rgb(0, 110, 90);
+    --color2: rgb(0, 70, 120);
+    --color3: rgb(253, 80, 61);
+    --color4: rgb(250, 235, 215);
+    --font1: 'Mynerve', cursive;
+    --font2: 'Laila', sans-serif;
+    --shadowBox: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+    --shadowText: 3px 3px 2px rgba(0, 0, 0, 0.67);
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+svg {
+    width: 24px;
+    height: 24px;
+    transition: 0.3s;
+}
+
+body {
+    background: var(--color1);
+    color: var(--color4);
+    width: 100%;
+}
+
+span {
+    color: var(--color3);
+}
+
+/***********HEADER********************/
+
+header {
+    width: 95%;
+    margin: 5px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-family: var(--font1);
+    text-shadow: var(--shadowText);
+    font-size: 23px;
+    line-height: 28px;
+}
+
+header p {
+    font-size: 12px;
+    line-height: 18px;
+}
+
+#headerNav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+#headerNav svg:hover {
+    fill: rgb(250, 89, 71);
+    transition: 0.3s;
+}
+
+/**********MAIN********************/
+
+main {
+    width: 95%;
+    margin: 5px auto;
+}
+
+section {
+    display: none;
+}
+
+section.active {
+    display: block;
+    background: var(--color2);
+    border-radius: 10px;
+    box-shadow: var(--shadowBox);
+    padding: 10px;
+}
+
+h2 {
+    font-size: 18px;
+    line-height: 20px;
+    padding-bottom: 5px;
+}
