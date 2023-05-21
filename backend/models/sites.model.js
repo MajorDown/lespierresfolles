@@ -13,6 +13,7 @@ const SitesSchema = new mongoose.Schema({
   publicAccess: { type: Boolean, required: false },
   description: { type: String, required: false },
   length: { type: Number, required: false },
+  weigth: { type: Number, required: false },
   material: { type: String, required: false },
   images: {
     url1: { type: String, required: true },
