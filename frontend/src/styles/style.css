@@ -137,7 +137,6 @@ h2 {
     margin: 5px 0px 0px 0px;
     text-align: end;
     font-size: 2vw;
-
 }
 
 .describer {
@@ -147,7 +146,7 @@ h2 {
 .accordionHeader {
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 2vw;
 }
 
 .accordionHeader svg {
@@ -155,11 +154,15 @@ h2 {
 }
 
 .accordionContent {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 0px;
+    overflow: hidden;
+    transition: height 0.5s;
 }
 
 .accordionContent.open {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    height: 140px;
+    transition: height 0.5s;
 }
