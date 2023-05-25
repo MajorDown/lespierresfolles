@@ -139,18 +139,24 @@ h2 {
     font-size: 2vw;
 }
 
-.describer {
+.informer {
     margin: 10px 10px 0px 10px;
 }
 
 .accordionHeader {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: center;
     gap: 2vw;
+    background-color: var(--color4);
+    color: var(--color2);
+    margin: 10px 0px 10px 0px;
+    padding: 0px 10px 0px 10px;
+    border-radius: 5px;
 }
 
 .accordionHeader svg {
-    fill: var(--color4);
+    fill: var(--color2);
 }
 
 .accordionContent {
@@ -160,9 +166,14 @@ h2 {
     height: 0px;
     overflow: hidden;
     transition: height 0.5s;
+    margin: 0px 10px 0px 10px;
 }
 
 .accordionContent.open {
-    height: 140px;
+    height: 120px;
     transition: height 0.5s;
+}
+
+.post {
+    margin: 10px 0px 0px 0px;
 }

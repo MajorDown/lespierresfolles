@@ -29,7 +29,7 @@ const Site = () => {
         </div>
         <p className="credits">crédit photos : Alex</p>
       </div>
-      <div className="describer">
+      <div className="informer">
         <p>
           Menhir haut de 7 mètre de haut en plein centre ville d'Avrillé,
           derrière la mairie. Quelques pancartes relatent son historique autour.
