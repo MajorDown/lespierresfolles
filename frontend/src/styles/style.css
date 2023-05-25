@@ -143,3 +143,23 @@ h2 {
 .describer {
     margin: 10px 10px 0px 10px;
 }
+
+.accordionHeader {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.accordionHeader svg {
+    fill: var(--color4);
+}
+
+.accordionContent {
+    display: none;
+}
+
+.accordionContent.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}

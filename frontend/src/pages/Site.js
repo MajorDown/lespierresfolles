@@ -1,4 +1,5 @@
 import React from "react";
+import Accordion from "../components/Accordion";
 
 const Site = () => {
   return (
@@ -33,7 +34,11 @@ const Site = () => {
           Menhir haut de 7 mètre de haut en plein centre ville d'Avrillé,
           derrière la mairie. Quelques pancartes relatent son historique autour.
         </p>
-        <p>Type de structure : Menhir</p>
+        <Accordion name="autres informations">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
+          minima fuga esse ipsum neque aliquam quia accusantium a accusamus
+          similique?
+        </Accordion>
       </div>
     </section>
   );
