@@ -2,6 +2,30 @@ import React from "react";
 
 const SvgMaker = (props) => {
   switch (props.item) {
+    case "arrow-left":
+      return (
+        <svg viewBox="0 -960 960 960" name={props.name}>
+          <path
+            onClick={props.onClick}
+            onMouseMove={props.onMouseMove}
+            onMouseOut={props.onMouseOut}
+            d="M400-80 0-480l400-400 56 57-343 343 343 343-56 57Z"
+          />
+        </svg>
+      );
+
+    case "arrow-right":
+      return (
+        <svg viewBox="0 -960 960 960" name={props.name}>
+          <path
+            onClick={props.onClick}
+            onMouseMove={props.onMouseMove}
+            onMouseOut={props.onMouseOut}
+            d="m304-82-56-57 343-343-343-343 56-57 400 400L304-82Z"
+          />
+        </svg>
+      );
+
     case "up":
       return (
         <svg viewBox="0 0 24 24" name={props.name}>

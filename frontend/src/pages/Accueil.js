@@ -1,40 +1,37 @@
 import React from "react";
+import Carousel from "../components/Carousel";
 
 const Accueil = () => {
   return (
-    <section>
-      <h2>Menhir de la Pierre Levé</h2>
-      <p className="place">Avrillé (85)</p>
-      <div className="previewers">
-        <div className="previewerLead">
-          <img src="/images/menhir1.jpg" alt="" />
-        </div>
-        <div className="previewersList">
-          <div className="previewer">
-            <img src="/images/menhir1.jpg" alt="" />
-          </div>
-          <div className="previewer">
-            <img src="/images/menhir2.jpg" alt="" />
-          </div>
-          <div className="previewer">
-            <img src="/images/menhir3.jpg" alt="" />
-          </div>
-          <div className="previewer">
-            <img src="/images/menhir4.jpg" alt="" />
-          </div>
-          <div className="previewer">
-            <img src="/images/menhir5.jpg" alt="" />
-          </div>
-        </div>
-        <p className="credits">crédit photos : Alex</p>
-      </div>
-      <div className="describer">
-        <p>
-          Menhir haut de 7 mètre de haut en plein centre ville d'Avrillé,
-          derrière la mairie. Quelques pancartes relatent son historique autour.
-        </p>
-        <p>Type de structure : Menhir</p>
-      </div>
+    <section id="accueil">
+      <h2>Le site de référencement des mégalithes de France</h2>
+      <p>les derniers ajouts :</p>
+      <Carousel
+        time="10000"
+        album={[
+          "/images/menhir1.jpg",
+          "/images/menhir2.jpg",
+          "/images/menhir3.jpg",
+          "/images/menhir4.jpg",
+          "/images/menhir5.jpg",
+        ]}
+      />
+      <p>
+        Que vous souhaitiez silloner les routes à la découvertes des menhirs,
+        dolmens et autre tumulus éparpillés sur notre belle contrée, ou que vous
+        souhaitiez contribuer à cette base de donnée en apportant vos photos ou
+        vos commentaires, Soyez les bienvenues !
+      </p>
+      <p>
+        l'ensemble de la base de donnée est accessible à tous. <br />
+        Toutefois, pour poster un nouveau site ou pour ajouter un commentaire,
+        une authentification est recquise.
+      </p>
+      <p>
+        Créé par des passionnés de gros cailoux, cette application gratuite à
+        pour but de favoriser l'étude des mégalithes, leurs fonctions et leur
+        sercrets.{" "}
+      </p>
     </section>
   );
 };
