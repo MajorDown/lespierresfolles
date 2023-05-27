@@ -11,14 +11,12 @@ const Search = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [mapKey, setMapKey] = useState(Date.now());
   const [selectedMonumentType, setSelectedMonumentType] = useState("");
-  const [currentLocation, setCurrentLocation] = useState([
-    46.636322, -1.162159,
-  ]);
+  const [currentLocation, setCurrentLocation] = useState([0, 0]);
   const [zoomLevel, setZoomLevel] = useState(8);
 
   const markers = [
     {
-      geocode: [46.636322, -1.162159],
+      geocode: currentLocation,
       popUp: "Votre position",
     },
   ];
@@ -96,85 +94,94 @@ const Search = () => {
       <h2>Recherchez des Mégalithes</h2>
       <div id="searchSection">
         <p>Vous souhaitez effectuer votre recherche par :</p>
-        <label htmlFor="searchByGeolocation">géolocalisation</label>
-        <input
-          type="radio"
-          name="searchBy"
-          id="searchByGeolocation"
-          value="geolocation"
-          checked={searchOption === "geolocation"}
-          onChange={handleSearchOptionChange}
-        />
-        <label htmlFor="searchByDepartment">département</label>
-        <input
-          type="radio"
-          name="searchBy"
-          id="searchByDepartment"
-          value="department"
-          checked={searchOption === "department"}
-          onChange={handleSearchOptionChange}
-        />
+        <p>
+          <label htmlFor="searchByGeolocation">géolocalisation </label>
+          <input
+            type="radio"
+            name="searchBy"
+            id="searchByGeolocation"
+            value="geolocation"
+            checked={searchOption === "geolocation"}
+            onChange={handleSearchOptionChange}
+          />
+        </p>
+        <p>
+          <label htmlFor="searchByDepartment">département </label>
+          <input
+            type="radio"
+            name="searchBy"
+            id="searchByDepartment"
+            value="department"
+            checked={searchOption === "department"}
+            onChange={handleSearchOptionChange}
+          />{" "}
+        </p>
+        <br />
+        {searchOption === "geolocation" && (
+          <form id="searchForm">
+            <label htmlFor="radius">Choisissez le rayon :</label>
+            <br />
+            <select
+              value={selectedRadius}
+              onChange={(event) => setSelectedRadius(event.target.value)}
+            >
+              <option value="5">5 km</option>
+              <option value="10">10 km</option>
+              <option value="20">20 km</option>
+              {/* Ajoutez d'autres options de rayon selon vos besoins */}
+            </select>
+            <br />
+            <label htmlFor="monumentType">
+              Choisissez le type de monument :
+            </label>
+            <br />
+            <select
+              value={selectedMonumentType}
+              onChange={handleMonumentTypeChange}
+            >
+              <option value="">Tous</option>
+              <option value="menhir">Menhir</option>
+              <option value="dolmen">Dolmen</option>
+              <option value="tumulus">Tumulus</option>
+              <option value="autre">Autre</option>
+            </select>
+          </form>
+        )}
+        {searchOption === "department" && (
+          <form id="searchForm">
+            <label htmlFor="departmentNumber">
+              Choisissez le département :
+            </label>
+            <br />
+            <select
+              value={selectedDepartment}
+              onChange={(event) => setSelectedDepartment(event.target.value)}
+            >
+              <option value="">choix du département</option>
+              {departments.map((department) => (
+                <option key={department.code} value={department.code}>
+                  {department.name} ({department.code})
+                </option>
+              ))}
+            </select>{" "}
+            <br />
+            <label htmlFor="monumentType">
+              Choisissez le type de monument :
+            </label>
+            <br />
+            <select
+              value={selectedMonumentType}
+              onChange={handleMonumentTypeChange}
+            >
+              <option value="">Tous</option>
+              <option value="menhir">Menhir</option>
+              <option value="dolmen">Dolmen</option>
+              <option value="tumulus">Tumulus</option>
+              <option value="autre">Autre</option>
+            </select>
+          </form>
+        )}
       </div>
-
-      {searchOption === "geolocation" && (
-        <form id="searchForm">
-          <label htmlFor="radius">Choisissez le rayon :</label>
-          <br />
-          <select
-            value={selectedRadius}
-            onChange={(event) => setSelectedRadius(event.target.value)}
-          >
-            <option value="5">5 km</option>
-            <option value="10">10 km</option>
-            <option value="20">20 km</option>
-            {/* Ajoutez d'autres options de rayon selon vos besoins */}
-          </select>
-          <br />
-          <label htmlFor="monumentType">Choisissez le type de monument :</label>
-          <br />
-          <select
-            value={selectedMonumentType}
-            onChange={handleMonumentTypeChange}
-          >
-            <option value="">Tous</option>
-            <option value="menhir">Menhir</option>
-            <option value="dolmen">Dolmen</option>
-            <option value="tumulus">Tumulus</option>
-            <option value="autre">Autre</option>
-          </select>
-        </form>
-      )}
-
-      {searchOption === "department" && (
-        <form id="searchForm">
-          <label htmlFor="departmentNumber">Choisissez le département :</label>
-          <br />
-          <select
-            value={selectedDepartment}
-            onChange={(event) => setSelectedDepartment(event.target.value)}
-          >
-            <option value="">choix du département</option>
-            {departments.map((department) => (
-              <option key={department.code} value={department.code}>
-                {department.name} ({department.code})
-              </option>
-            ))}
-          </select>{" "}
-          <br />
-          <label htmlFor="monumentType">Choisissez le type de monument :</label>
-          <br />
-          <select
-            value={selectedMonumentType}
-            onChange={handleMonumentTypeChange}
-          >
-            <option value="">Tous</option>
-            <option value="menhir">Menhir</option>
-            <option value="dolmen">Dolmen</option>
-            <option value="tumulus">Tumulus</option>
-            <option value="autre">Autre</option>
-          </select>
-        </form>
-      )}
 
       <MapContainer key={mapKey} center={currentLocation} zoom={zoomLevel}>
         <TileLayer

@@ -226,14 +226,35 @@ h2 {
 
 /**********SEARCH********************/
 
+#searchSection {
+    margin: 2vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1vw;
+}
+
+#searchSection p {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+}
+
+#searchSection select {
+    border-radius: 2vw;
+    border: var(--color4) 0.5vw solid;
+    margin: 1vw 0 1vw 0;
+    padding: 0.5vw;
+    background: var(--color3);
+    color: var(--color4);
+}
+
 .leaflet-container {
     margin: 0.5vw;
     width: 99%;
     height: 120vw;
     border-radius: 2vw;
 }
-
-
 
 /**********FOOTER******************/
 
