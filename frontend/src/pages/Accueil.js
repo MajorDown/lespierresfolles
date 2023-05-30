@@ -1,5 +1,5 @@
 import React from "react";
-import Carousel from "../components/Carousel";
+import Carousel from "./Carousel";
 
 const Accueil = () => {
   return (
@@ -30,7 +30,7 @@ const Accueil = () => {
       <p>
         Créé par des passionnés de gros cailoux, cette application gratuite à
         pour but de favoriser l'étude des mégalithes, leurs fonctions et leur
-        sercrets.{" "}
+        sercrets.
       </p>
     </section>
   );

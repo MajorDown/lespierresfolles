@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SvgMaker from "./SvgMaker";
+import SvgMaker from "../components/SvgMaker";
 
 const Carousel = ({ album, time }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
