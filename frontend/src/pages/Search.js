@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
-import departmentsData from "../departments.json";
+import departments from "../departments.json";
 
 const Search = () => {
   const [selectedRadius, setSelectedRadius] = useState(8);
   const [searchOption, setSearchOption] = useState("geolocation");
-  const [departments, setDepartments] = useState(departmentsData);
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [mapKey, setMapKey] = useState(Date.now());
   const [selectedMonumentType, setSelectedMonumentType] = useState("");
