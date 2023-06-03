@@ -35,6 +35,17 @@ const Create = () => {
       <label htmlFor="">commmune:</label>
       <br />
       <Autocompleter department={selectedDepartment} />
+      <br />
+      <label htmlFor="">type de mégalithe :</label>
+      <br />
+      <label htmlFor="">ajouter une description (max 50 caractère) :</label>
+      <br />
+      <label htmlFor="">ajoutez vos photos (max 5 fichiers) :</label>
+      <br />
+      <label htmlFor=""></label>
+      <br />
+      <label htmlFor=""></label>
+      <br />
 
       <MapContainer key={mapKey} center={currentLocation} zoom={zoomLevel}>
         <TileLayer
