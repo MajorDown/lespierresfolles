@@ -5,10 +5,10 @@ import citiesData from "../cities.json";
 const Autocompleter = ({ department }) => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [visibleSuggestionsCount, setVisibleSuggestionsCount] = useState(10);
 
   useEffect(() => {
     const fetchSuggestions = () => {
-      // Filtrer les communes en fonction du département
       const filteredCommunes = citiesData.filter((commune) => {
         if (commune && commune.cp) {
           const cp = commune.cp.toString().padStart(5, "0");
@@ -17,15 +17,14 @@ const Autocompleter = ({ department }) => {
         return false;
       });
 
-      // Filtrer les suggestions en fonction de la valeur de l'input
       const filteredSuggestions = filteredCommunes.filter(
         (commune) =>
           commune.commune &&
           commune.commune.toLowerCase().includes(inputValue.toLowerCase())
       );
 
-      // Mettre à jour les suggestions
-      setSuggestions(filteredSuggestions);
+      setVisibleSuggestionsCount(Math.min(filteredSuggestions.length, 10));
+      setSuggestions(filteredSuggestions.slice(0, visibleSuggestionsCount));
     };
 
     const debouncedFetch = debounce(fetchSuggestions, 300);
@@ -39,7 +38,7 @@ const Autocompleter = ({ department }) => {
     return () => {
       debouncedFetch.cancel();
     };
-  }, [inputValue, department]);
+  }, [inputValue, department, visibleSuggestionsCount]);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -52,7 +51,7 @@ const Autocompleter = ({ department }) => {
   return (
     <>
       <input type="text" value={inputValue} onChange={handleInputChange} />
-      <ul>
+      <ul className="completerList">
         {suggestions.map((suggestion, index) => (
           <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
             {suggestion.commune} ({suggestion.cp})
