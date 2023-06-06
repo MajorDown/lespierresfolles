@@ -295,7 +295,7 @@ const Create = () => {
         {megalithMarkerPosition[0]}, <br />
         {megalithMarkerPosition[1]}
       </p>
-      <MapContainer key={mapKey} center={currentLocation} zoom={10}>
+      <MapContainer key={mapKey} center={currentLocation} zoom={9}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreemap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
