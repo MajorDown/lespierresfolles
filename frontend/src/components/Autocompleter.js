@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import debounce from "lodash.debounce";
 import citiesData from "../cities.json";
 
-const Autocompleter = ({ department }) => {
+const Autocompleter = ({ department, onCitySelect }) => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [visibleSuggestionsCount, setVisibleSuggestionsCount] = useState(10);
@@ -17,14 +17,17 @@ const Autocompleter = ({ department }) => {
         return false;
       });
 
-      const filteredSuggestions = filteredCommunes.filter(
-        (commune) =>
-          commune.commune &&
-          commune.commune.toLowerCase().includes(inputValue.toLowerCase())
+      const filteredSuggestions = filteredCommunes.filter((commune) =>
+        commune.commune.toLowerCase().includes(inputValue.toLowerCase())
       );
 
-      setVisibleSuggestionsCount(Math.min(filteredSuggestions.length, 10));
-      setSuggestions(filteredSuggestions.slice(0, visibleSuggestionsCount));
+      const suggestionsWithCoords = filteredSuggestions.map((suggestion) => {
+        const [lat, lng] = suggestion.coords.split(",");
+        return { ...suggestion, lat, lng };
+      });
+
+      setVisibleSuggestionsCount(Math.min(suggestionsWithCoords.length, 10));
+      setSuggestions(suggestionsWithCoords.slice(0, visibleSuggestionsCount));
     };
 
     const debouncedFetch = debounce(fetchSuggestions, 300);
@@ -46,6 +49,9 @@ const Autocompleter = ({ department }) => {
 
   const handleSuggestionClick = (suggestion) => {
     setInputValue(suggestion.commune);
+    if (suggestion.lat && suggestion.lng) {
+      onCitySelect(suggestion.lat, suggestion.lng);
+    }
   };
 
   return (

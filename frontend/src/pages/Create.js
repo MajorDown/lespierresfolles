@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
@@ -7,16 +7,24 @@ import Autocompleter from "../components/Autocompleter";
 
 const Create = () => {
   const [siteName, setSiteName] = useState("");
-  const [selectedRadius, setSelectedRadius] = useState(8);
-  const [searchOption, setSearchOption] = useState("geolocation");
-  const [selectedDepartment, setSelectedDepartment] = useState(85);
   const [mapKey, setMapKey] = useState(Date.now());
   const [selectedMonumentType, setSelectedMonumentType] = useState("");
-  const [currentLocation, setCurrentLocation] = useState([0, 0]);
-  const [zoomLevel, setZoomLevel] = useState(8);
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
-  const [selectedMaterial, setSelectedMaterial] = useState("none");
+  const [selectedMaterial, setSelectedMaterial] = useState("inconnu");
+  const [selectedState, setSelectedState] = useState("");
+  const [size, setSize] = useState(null);
+  const [weight, setWeight] = useState(null);
+  const [publicAccess, setPublicAccess] = useState(true);
+  const [currentLocation, setCurrentLocation] = useState([48.8566, 2.3522]);
+  const [selectedDepartment, setSelectedDepartment] = useState(85);
+  const [megalithMarkerPosition, setMegalithMarkerPosition] = useState([
+    48.8566, 2.3522,
+  ]);
+
+  useEffect(() => {
+    setMapKey(Date.now());
+  }, [currentLocation]);
 
   const monumentTypes = ["dolmen", "menhir", "tumulus", "autre"];
   const materials = [
@@ -33,20 +41,26 @@ const Create = () => {
     "andesite",
     "diorite",
   ];
+  const states = ["bon état", "état moyen", "mauvais état", "détruit"];
 
-  const markers = [
-    {
-      geocode: currentLocation,
-      popUp: "Votre position",
-    },
-  ];
   const leafletIcon = new Icon({
     iconUrl: require("../icons/siteIcon.png"),
     iconSize: [30, 30],
   });
 
   const handleDepartmentChange = (event) => {
-    setSelectedDepartment(event.target.value);
+    const selectedCode = event.target.value;
+    const selectedDepartment = departments.find(
+      (department) => department.code === selectedCode
+    );
+
+    if (selectedDepartment) {
+      const [lat, lng] = selectedDepartment.coords;
+      setCurrentLocation([lat, lng]);
+      setMegalithMarkerPosition([lat, lng]);
+    }
+
+    setSelectedDepartment(selectedCode);
   };
 
   const handleMonumentTypeChange = (event) => {
@@ -73,10 +87,72 @@ const Create = () => {
     setSelectedMaterial(event.target.value);
   };
 
+  const handleStateChange = (event) => {
+    setSelectedState(event.target.value);
+  };
+
+  const handleSizeChange = (event) => {
+    const newSize = event.target.value ? parseFloat(event.target.value) : null;
+    setSize(newSize);
+  };
+
+  const handleWeightChange = (event) => {
+    const newWeight = event.target.value
+      ? parseFloat(event.target.value)
+      : null;
+    setWeight(newWeight);
+  };
+
+  const handlePublicAccessChange = (event) => {
+    setPublicAccess(event.target.checked);
+  };
+
+  const handleCitySelect = (lat, lng) => {
+    setCurrentLocation([lat, lng]);
+    setMegalithMarkerPosition([lat, lng]);
+  };
+
+  const handleMarkerDrag = (e) => {
+    const { lat, lng } = e.target.getLatLng();
+    setMegalithMarkerPosition([lat, lng]);
+  };
+
+  const handleGeolocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation([latitude, longitude]);
+        setMegalithMarkerPosition([latitude, longitude]);
+      },
+      (error) => {
+        console.error("Erreur de géolocalisation :", error);
+      }
+    );
+  };
+
+  const handleSubmit = () => {
+    if (window.confirm("Êtes-vous sûr de vouloir soumettre le formulaire ?")) {
+      console.log("Données du formulaire :", {
+        siteName,
+        selectedDepartment,
+        selectedMonumentType,
+        description,
+        photos,
+        selectedState,
+        publicAccess,
+        selectedMaterial,
+        size,
+        weight,
+        currentLocation,
+        megalithMarkerPosition,
+      });
+    }
+  };
+
   return (
     <section>
       <h2>Ajouter un Mégalithe</h2>
-      <label htmlFor="siteNameInput">Nom / lieu-di du site :</label>
+      <label htmlFor="siteNameInput">Nom / lieu-dit du site :</label>
       <br />
       <input
         id="siteNameInput"
@@ -95,11 +171,14 @@ const Create = () => {
         ))}
       </select>
       <br />
-      <label htmlFor="">commmune:</label>
+      <label htmlFor="">Commune :</label>
       <br />
-      <Autocompleter department={selectedDepartment} />
+      <Autocompleter
+        department={selectedDepartment}
+        onCitySelect={handleCitySelect}
+      />
       <br />
-      <label htmlFor="">type du monument :</label>
+      <label htmlFor="">Type du monument :</label>
       <br />
       <select value={selectedMonumentType} onChange={handleMonumentTypeChange}>
         {monumentTypes.map((type) => (
@@ -109,7 +188,7 @@ const Create = () => {
         ))}
       </select>
       <br />
-      <label htmlFor="">ajoutez une description (max 100 caractères) :</label>
+      <label htmlFor="">Ajoutez une description (max 100 caractères) :</label>
       <br />
       <input
         type="text"
@@ -163,6 +242,24 @@ const Create = () => {
       />
       {photos[4] && <img src={photos[4]} alt="Photo 5" />}
       <br />
+      <label htmlFor="">Décrivez l'état de conservation du site :</label>
+      <br />
+      <select value={selectedState} onChange={handleStateChange}>
+        {states.map((state) => (
+          <option key={state} value={state}>
+            {state}
+          </option>
+        ))}
+      </select>
+      <br />
+      <label htmlFor="">Accessible au public : </label>
+      <input
+        type="checkbox"
+        checked={publicAccess}
+        onChange={handlePublicAccessChange}
+      />{" "}
+      Oui
+      <br />
       <label htmlFor="">Matériau utilisé :</label>
       <br />
       <select value={selectedMaterial} onChange={handleMaterialChange}>
@@ -173,24 +270,52 @@ const Create = () => {
         ))}
       </select>
       <br />
-
-      <MapContainer key={mapKey} center={currentLocation} zoom={zoomLevel}>
+      <label htmlFor="">Hauteur approximative :</label>
+      <input
+        type="number"
+        value={size !== null ? size : ""}
+        onChange={handleSizeChange}
+      />{" "}
+      mètres
+      <br />
+      <label htmlFor="">Poids approximatif :</label>
+      <input
+        type="number"
+        step="any"
+        value={weight !== null ? weight : ""}
+        onChange={handleWeightChange}
+      />{" "}
+      tonnes
+      <br />
+      <p>
+        Positionnez le site sur la carte. Attention à la précision !<br />
+        <button onClick={handleGeolocation}>Utiliser votre position</button>
+        <br />
+        coordonnées :<br />
+        {megalithMarkerPosition[0]}, <br />
+        {megalithMarkerPosition[1]}
+      </p>
+      <MapContainer key={mapKey} center={currentLocation} zoom={10}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreemap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {markers.map((marker, index) => {
-          return (
-            <Marker key={index} position={marker.geocode} icon={leafletIcon}>
-              <Popup>
-                {marker.popUp}
-                <br />
-                {marker.geocode[0]}, {marker.geocode[1]}
-              </Popup>
-            </Marker>
-          );
-        })}
+        <Marker
+          position={megalithMarkerPosition}
+          icon={leafletIcon}
+          draggable={true}
+          eventHandlers={{
+            dragend: (event) => {
+              handleMarkerDrag(event);
+            },
+          }}
+        >
+          <Popup>{siteName !== "" ? siteName : "nouveau site"}</Popup>
+        </Marker>
       </MapContainer>
+      <button onClick={handleSubmit}>
+        Valider la création du nouveau site
+      </button>
     </section>
   );
 };
