@@ -4,6 +4,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import departments from "../departments.json";
 import cities from "../cities.json";
+import monumentTypes from "../monumentTypes.json";
+import materials from "../materials.json";
 
 const Create = () => {
   const [mapKey, setMapKey] = useState(Date.now());
@@ -36,21 +38,7 @@ const Create = () => {
       return false;
     })
     .sort((a, b) => a.commune.localeCompare(b.commune));
-  const monumentTypes = ["dolmen", "menhir", "tumulus", "autre"];
-  const materials = [
-    "inconnu",
-    "silex",
-    "basalte",
-    "marbre",
-    "grès",
-    "schiste",
-    "quartzite",
-    "gneiss",
-    "calcaire",
-    "granite",
-    "andesite",
-    "diorite",
-  ];
+
   const states = ["bon état", "état moyen", "mauvais état", "détruit"];
 
   const leafletIcon = new Icon({
