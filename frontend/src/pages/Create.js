@@ -117,7 +117,8 @@ const Create = () => {
     setMegalithMarkerPosition([lat, lng]);
   };
 
-  const handleGeolocation = () => {
+  const handleGeolocation = (event) => {
+    event.preventDefault();
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
@@ -150,172 +151,218 @@ const Create = () => {
   };
 
   return (
-    <section>
+    <section id="createSection">
       <h2>Ajouter un Mégalithe</h2>
-      <label htmlFor="siteNameInput">Nom / lieu-dit du site :</label>
-      <br />
-      <input
-        id="siteNameInput"
-        type="text"
-        value={siteName}
-        onChange={handleSiteNameChange}
-      />
-      <br />
-      <label htmlFor="">Département :</label>
-      <br />
-      <select value={selectedDepartment} onChange={handleDepartmentChange}>
-        {departments.map((department) => (
-          <option key={department.code} value={department.code}>
-            {department.name} ({department.code})
-          </option>
-        ))}
-      </select>
-      <br />
-      <label htmlFor="">Commune :</label>
-      <br />
-      <Autocompleter
-        department={selectedDepartment}
-        onCitySelect={handleCitySelect}
-      />
-      <br />
-      <label htmlFor="">Type du monument :</label>
-      <br />
-      <select value={selectedMonumentType} onChange={handleMonumentTypeChange}>
-        {monumentTypes.map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </select>
-      <br />
-      <label htmlFor="">Ajoutez une description (max 100 caractères) :</label>
-      <br />
-      <input
-        type="text"
-        value={description}
-        onChange={handleDescriptionChange}
-        maxLength={100}
-      />
-      <br />
-      <label htmlFor="photoUploadInput1">Ajouter une première photo :</label>
-      <br />
-      <input
-        id="photoUploadInput1"
-        type="file"
-        onChange={(e) => handlePhotoUpload(e, 0)}
-      />
-      {photos[0] && <img src={photos[0]} alt="Photo 1" />}
-      <br />
-      <label htmlFor="photoUploadInput2">Ajouter une deuxième photo :</label>
-      <br />
-      <input
-        id="photoUploadInput2"
-        type="file"
-        onChange={(e) => handlePhotoUpload(e, 1)}
-      />
-      {photos[1] && <img src={photos[1]} alt="Photo 2" />}
-      <br />
-      <label htmlFor="photoUploadInput3">Ajouter une troisième photo :</label>
-      <br />
-      <input
-        id="photoUploadInput3"
-        type="file"
-        onChange={(e) => handlePhotoUpload(e, 2)}
-      />
-      {photos[2] && <img src={photos[2]} alt="Photo 3" />}
-      <br />
-      <label htmlFor="photoUploadInput4">Ajouter une quatrième photo :</label>
-      <br />
-      <input
-        id="photoUploadInput4"
-        type="file"
-        onChange={(e) => handlePhotoUpload(e, 3)}
-      />
-      {photos[3] && <img src={photos[3]} alt="Photo 4" />}
-      <br />
-      <label htmlFor="photoUploadInput5">Ajouter une cinquième photo :</label>
-      <br />
-      <input
-        id="photoUploadInput5"
-        type="file"
-        onChange={(e) => handlePhotoUpload(e, 4)}
-      />
-      {photos[4] && <img src={photos[4]} alt="Photo 5" />}
-      <br />
-      <label htmlFor="">Décrivez l'état de conservation du site :</label>
-      <br />
-      <select value={selectedState} onChange={handleStateChange}>
-        {states.map((state) => (
-          <option key={state} value={state}>
-            {state}
-          </option>
-        ))}
-      </select>
-      <br />
-      <label htmlFor="">Accessible au public : </label>
-      <input
-        type="checkbox"
-        checked={publicAccess}
-        onChange={handlePublicAccessChange}
-      />{" "}
-      Oui
-      <br />
-      <label htmlFor="">Matériau utilisé :</label>
-      <br />
-      <select value={selectedMaterial} onChange={handleMaterialChange}>
-        {materials.map((material) => (
-          <option key={material} value={material}>
-            {material}
-          </option>
-        ))}
-      </select>
-      <br />
-      <label htmlFor="">Hauteur approximative :</label>
-      <input
-        type="number"
-        value={size !== null ? size : ""}
-        onChange={handleSizeChange}
-      />{" "}
-      mètres
-      <br />
-      <label htmlFor="">Poids approximatif :</label>
-      <input
-        type="number"
-        step="any"
-        value={weight !== null ? weight : ""}
-        onChange={handleWeightChange}
-      />{" "}
-      tonnes
-      <br />
-      <p>
-        Positionnez le site sur la carte. Attention à la précision !<br />
-        <button onClick={handleGeolocation}>Utiliser votre position</button>
+      <form action="">
+        <label htmlFor="siteNameInput">
+          Nom / lieu-dit du site<span>*</span> :
+        </label>
         <br />
-        coordonnées :<br />
-        {megalithMarkerPosition[0]}, <br />
-        {megalithMarkerPosition[1]}
-      </p>
-      <MapContainer key={mapKey} center={currentLocation} zoom={9}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreemap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        <input
+          required
+          id="siteNameInput"
+          type="text"
+          value={siteName}
+          onChange={handleSiteNameChange}
         />
-        <Marker
-          position={megalithMarkerPosition}
-          icon={leafletIcon}
-          draggable={true}
-          eventHandlers={{
-            dragend: (event) => {
-              handleMarkerDrag(event);
-            },
-          }}
+        <br />
+        <label htmlFor="">
+          Département<span>*</span> :
+        </label>
+        <br />
+        <select
+          required
+          value={selectedDepartment}
+          onChange={handleDepartmentChange}
         >
-          <Popup>{siteName !== "" ? siteName : "nouveau site"}</Popup>
-        </Marker>
-      </MapContainer>
-      <button onClick={handleSubmit}>
-        Valider la création du nouveau site
-      </button>
+          {departments.map((department) => (
+            <option key={department.code} value={department.code}>
+              {department.name} ({department.code})
+            </option>
+          ))}
+        </select>
+        <br />
+        <label htmlFor="">
+          Commune<span>*</span> :
+        </label>
+        <br />
+        <Autocompleter
+          department={selectedDepartment}
+          onCitySelect={handleCitySelect}
+        />
+        <br />
+        <label htmlFor="">
+          Type du monument<span>*</span> :
+        </label>
+        <br />
+        <select
+          required
+          value={selectedMonumentType}
+          onChange={handleMonumentTypeChange}
+        >
+          {monumentTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+        <br />
+        <label htmlFor="">Ajoutez une description (max 100 caractères) :</label>
+        <br />
+        <textarea
+          id="siteDescription"
+          rows="3"
+          maxlength="100"
+          placeholder="Entrez votre description ici..."
+        ></textarea>
+        <br />
+        <label htmlFor="photoUploadInput1">
+          Ajouter une première photo<span>*</span> :
+        </label>
+        <br />
+        <input
+          required
+          id="photoUploadInput1"
+          type="file"
+          onChange={(e) => handlePhotoUpload(e, 0)}
+        />
+        {photos[0] && <img src={photos[0]} alt="Photo 1" />}
+        <br />
+        <label htmlFor="photoUploadInput2">Ajouter une deuxième photo :</label>
+        <br />
+        <input
+          id="photoUploadInput2"
+          type="file"
+          onChange={(e) => handlePhotoUpload(e, 1)}
+        />
+        {photos[1] && <img src={photos[1]} alt="Photo 2" />}
+        <br />
+        <label htmlFor="photoUploadInput3">Ajouter une troisième photo :</label>
+        <br />
+        <input
+          id="photoUploadInput3"
+          type="file"
+          onChange={(e) => handlePhotoUpload(e, 2)}
+        />
+        {photos[2] && <img src={photos[2]} alt="Photo 3" />}
+        <br />
+        <label htmlFor="photoUploadInput4">Ajouter une quatrième photo :</label>
+        <br />
+        <input
+          id="photoUploadInput4"
+          type="file"
+          onChange={(e) => handlePhotoUpload(e, 3)}
+        />
+        {photos[3] && <img src={photos[3]} alt="Photo 4" />}
+        <br />
+        <label htmlFor="photoUploadInput5">Ajouter une cinquième photo :</label>
+        <br />
+        <input
+          id="photoUploadInput5"
+          type="file"
+          onChange={(e) => handlePhotoUpload(e, 4)}
+        />
+        {photos[4] && <img src={photos[4]} alt="Photo 5" />}
+        <br />
+        <label htmlFor="">Décrivez l'état de conservation du site :</label>
+        <br />
+        <select value={selectedState} onChange={handleStateChange}>
+          {states.map((state) => (
+            <option key={state} value={state}>
+              {state}
+            </option>
+          ))}
+        </select>
+        <br />
+        <label htmlFor="">Accessible au public : </label>
+        <input
+          type="checkbox"
+          checked={publicAccess}
+          onChange={handlePublicAccessChange}
+        />{" "}
+        Oui
+        <br />
+        <label htmlFor="">Matériau utilisé :</label>
+        <br />
+        <select value={selectedMaterial} onChange={handleMaterialChange}>
+          {materials.map((material) => (
+            <option key={material} value={material}>
+              {material}
+            </option>
+          ))}
+        </select>
+        <br />
+        <label htmlFor="">Hauteur approximative :</label>
+        <input
+          type="number"
+          value={size !== null ? size : ""}
+          onChange={handleSizeChange}
+        />{" "}
+        mètres
+        <br />
+        <label htmlFor="">Poids approximatif :</label>
+        <input
+          type="number"
+          step="any"
+          value={weight !== null ? weight : ""}
+          onChange={handleWeightChange}
+        />{" "}
+        tonnes
+        <br />
+        <div id="mapForm">
+          Positionnez le site sur la carte. Attention à la précision !<br />
+          <button onClick={(e) => handleGeolocation(e)}>
+            Utiliser votre position
+          </button>
+          <p>
+            coordonnées<span>*</span> :
+          </p>
+          <p>
+            <label htmlFor="siteLat">lat = </label>
+            <input
+              required
+              type="number"
+              name="siteLat"
+              id="siteLat"
+              value={megalithMarkerPosition[0]}
+            />
+          </p>
+          <p>
+            <label htmlFor="siteLat">lon = </label>
+            <input
+              required
+              type="number"
+              name="siteLon"
+              id="siteLon"
+              value={megalithMarkerPosition[1]}
+            />
+          </p>
+        </div>
+        <MapContainer key={mapKey} center={currentLocation} zoom={9}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreemap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker
+            position={megalithMarkerPosition}
+            icon={leafletIcon}
+            draggable={true}
+            eventHandlers={{
+              dragend: (event) => {
+                handleMarkerDrag(event);
+              },
+            }}
+          >
+            <Popup>{siteName !== "" ? siteName : "nouveau site"}</Popup>
+          </Marker>
+        </MapContainer>
+        <button onClick={handleSubmit}>
+          Valider la création du nouveau site
+        </button>
+        <p>
+          <span>*</span>champs obligatoire
+        </p>
+      </form>
     </section>
   );
 };

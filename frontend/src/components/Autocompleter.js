@@ -56,7 +56,12 @@ const Autocompleter = ({ department, onCitySelect }) => {
 
   return (
     <>
-      <input type="text" value={inputValue} onChange={handleInputChange} />
+      <input
+        required
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+      />
       <ul className="completerList">
         {suggestions.map((suggestion, index) => (
           <li key={index} onClick={() => handleSuggestionClick(suggestion)}>

@@ -1,6 +1,5 @@
 import React from "react";
 import Carousel from "./Carousel";
-import Manipulable from "../components/Manipulable";
 
 const Accueil = () => {
   return (
@@ -33,9 +32,6 @@ const Accueil = () => {
         pour but de favoriser l'étude des mégalithes, leurs fonctions et leur
         sercrets.
       </p>
-      <Manipulable>
-        <p>hello !</p>
-      </Manipulable>
     </section>
   );
 };
