@@ -3,11 +3,13 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import departments from "../departments.json";
-import Autocompleter from "../components/Autocompleter";
+import cities from "../cities.json";
 
 const Create = () => {
-  const [siteName, setSiteName] = useState("");
   const [mapKey, setMapKey] = useState(Date.now());
+  const [siteName, setSiteName] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState(85);
+  const [selectedCity, setSelectedCity] = useState("");
   const [selectedMonumentType, setSelectedMonumentType] = useState("");
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
@@ -17,7 +19,6 @@ const Create = () => {
   const [weight, setWeight] = useState(null);
   const [publicAccess, setPublicAccess] = useState(true);
   const [currentLocation, setCurrentLocation] = useState([48.8566, 2.3522]);
-  const [selectedDepartment, setSelectedDepartment] = useState(85);
   const [megalithMarkerPosition, setMegalithMarkerPosition] = useState([
     48.8566, 2.3522,
   ]);
@@ -26,6 +27,15 @@ const Create = () => {
     setMapKey(Date.now());
   }, [currentLocation]);
 
+  const filteredCities = cities
+    .filter((city) => {
+      if (city && city.cp) {
+        const cp = city.cp.toString().padStart(5, "0");
+        return cp.startsWith(selectedDepartment.toString());
+      }
+      return false;
+    })
+    .sort((a, b) => a.commune.localeCompare(b.commune));
   const monumentTypes = ["dolmen", "menhir", "tumulus", "autre"];
   const materials = [
     "inconnu",
@@ -61,6 +71,18 @@ const Create = () => {
     }
 
     setSelectedDepartment(selectedCode);
+  };
+
+  const handleCityChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedCity(selectedValue);
+    const selectedCityData = cities.find(
+      (city) => city.commune === selectedValue
+    );
+    if (selectedCityData && selectedCityData.coords) {
+      const [lat, lng] = selectedCityData.coords.split(",");
+      handleCitySelect(parseFloat(lat), parseFloat(lng));
+    }
   };
 
   const handleMonumentTypeChange = (event) => {
@@ -153,24 +175,25 @@ const Create = () => {
   return (
     <section id="createSection">
       <h2>Ajouter un Mégalithe</h2>
-      <form action="">
-        <label htmlFor="siteNameInput">
+      <form action="POST">
+        <label htmlFor="input-name">
           Nom / lieu-dit du site<span>*</span> :
         </label>
         <br />
         <input
           required
-          id="siteNameInput"
+          id="input-name"
           type="text"
           value={siteName}
           onChange={handleSiteNameChange}
         />
         <br />
-        <label htmlFor="">
+        <label htmlFor="input-department">
           Département<span>*</span> :
         </label>
         <br />
         <select
+          id="input-department"
           required
           value={selectedDepartment}
           onChange={handleDepartmentChange}
@@ -182,20 +205,29 @@ const Create = () => {
           ))}
         </select>
         <br />
-        <label htmlFor="">
+        <label htmlFor="input-city">
           Commune<span>*</span> :
         </label>
         <br />
-        <Autocompleter
-          department={selectedDepartment}
-          onCitySelect={handleCitySelect}
-        />
+        <select
+          id="input-city"
+          value={selectedCity}
+          onChange={(event) => handleCityChange(event)}
+        >
+          <option value="">Sélectionner une ville</option>
+          {filteredCities.map((city) => (
+            <option key={city.commune} value={city.commune}>
+              {city.commune} ({city.cp})
+            </option>
+          ))}
+        </select>
         <br />
-        <label htmlFor="">
+        <label htmlFor="input-type">
           Type du monument<span>*</span> :
         </label>
         <br />
         <select
+          id="input-type"
           required
           value={selectedMonumentType}
           onChange={handleMonumentTypeChange}
@@ -207,66 +239,80 @@ const Create = () => {
           ))}
         </select>
         <br />
-        <label htmlFor="">Ajoutez une description (max 100 caractères) :</label>
+        <label htmlFor="input-description">
+          Ajoutez une description (max 100 caractères) :
+        </label>
         <br />
         <textarea
-          id="siteDescription"
+          id="input-description"
           rows="3"
-          maxlength="100"
+          maxLength="100"
           placeholder="Entrez votre description ici..."
+          onChange={(event) => handleDescriptionChange(event)}
+          value={description}
         ></textarea>
         <br />
-        <label htmlFor="photoUploadInput1">
+        <label htmlFor="input-file1">
           Ajouter une première photo<span>*</span> :
         </label>
         <br />
         <input
           required
-          id="photoUploadInput1"
+          id="input-file1"
           type="file"
           onChange={(e) => handlePhotoUpload(e, 0)}
         />
-        {photos[0] && <img src={photos[0]} alt="Photo 1" />}
         <br />
-        <label htmlFor="photoUploadInput2">Ajouter une deuxième photo :</label>
+        <label htmlFor="input-file2">Ajouter une deuxième photo :</label>
         <br />
         <input
-          id="photoUploadInput2"
+          id="input-file2"
           type="file"
           onChange={(e) => handlePhotoUpload(e, 1)}
         />
-        {photos[1] && <img src={photos[1]} alt="Photo 2" />}
         <br />
-        <label htmlFor="photoUploadInput3">Ajouter une troisième photo :</label>
+        <label htmlFor="input-file3">Ajouter une troisième photo :</label>
         <br />
         <input
-          id="photoUploadInput3"
+          id="input-file3"
           type="file"
           onChange={(e) => handlePhotoUpload(e, 2)}
         />
-        {photos[2] && <img src={photos[2]} alt="Photo 3" />}
         <br />
-        <label htmlFor="photoUploadInput4">Ajouter une quatrième photo :</label>
+        <label htmlFor="input-file4">Ajouter une quatrième photo :</label>
         <br />
         <input
-          id="photoUploadInput4"
+          id="input-file4"
           type="file"
           onChange={(e) => handlePhotoUpload(e, 3)}
         />
-        {photos[3] && <img src={photos[3]} alt="Photo 4" />}
         <br />
-        <label htmlFor="photoUploadInput5">Ajouter une cinquième photo :</label>
+        <label htmlFor="input-file5">Ajouter une cinquième photo :</label>
         <br />
         <input
-          id="photoUploadInput5"
+          id="input-file5"
           type="file"
           onChange={(e) => handlePhotoUpload(e, 4)}
         />
-        {photos[4] && <img src={photos[4]} alt="Photo 5" />}
         <br />
-        <label htmlFor="">Décrivez l'état de conservation du site :</label>
+        {photos.length >= 1 && (
+          <div id="photoPreview">
+            <div>{photos[0] && <img src={photos[0]} alt="Photo 1" />}</div>
+            <div>{photos[1] && <img src={photos[1]} alt="Photo 2" />}</div>
+            <div>{photos[2] && <img src={photos[2]} alt="Photo 3" />}</div>
+            <div>{photos[3] && <img src={photos[3]} alt="Photo 4" />}</div>
+            <div>{photos[4] && <img src={photos[4]} alt="Photo 5" />}</div>
+          </div>
+        )}
+        <label htmlFor="input-state">
+          Décrivez l'état de conservation du site :
+        </label>
         <br />
-        <select value={selectedState} onChange={handleStateChange}>
+        <select
+          id="input-state"
+          value={selectedState}
+          onChange={handleStateChange}
+        >
           {states.map((state) => (
             <option key={state} value={state}>
               {state}
@@ -274,17 +320,22 @@ const Create = () => {
           ))}
         </select>
         <br />
-        <label htmlFor="">Accessible au public : </label>
+        <label htmlFor="input-access">Accessible au public : </label>
         <input
+          id="input-access"
           type="checkbox"
           checked={publicAccess}
           onChange={handlePublicAccessChange}
         />{" "}
         Oui
         <br />
-        <label htmlFor="">Matériau utilisé :</label>
+        <label htmlFor="input-material">Matériau utilisé :</label>
         <br />
-        <select value={selectedMaterial} onChange={handleMaterialChange}>
+        <select
+          id="input-material"
+          value={selectedMaterial}
+          onChange={handleMaterialChange}
+        >
           {materials.map((material) => (
             <option key={material} value={material}>
               {material}
@@ -292,16 +343,18 @@ const Create = () => {
           ))}
         </select>
         <br />
-        <label htmlFor="">Hauteur approximative :</label>
+        <label htmlFor="input-size">Hauteur approximative :</label>
         <input
+          id="input-size"
           type="number"
           value={size !== null ? size : ""}
           onChange={handleSizeChange}
         />{" "}
         mètres
         <br />
-        <label htmlFor="">Poids approximatif :</label>
+        <label htmlFor="input-weight">Poids approximatif :</label>
         <input
+          id="input-weight"
           type="number"
           step="any"
           value={weight !== null ? weight : ""}
@@ -318,23 +371,25 @@ const Create = () => {
             coordonnées<span>*</span> :
           </p>
           <p>
-            <label htmlFor="siteLat">lat = </label>
+            <label htmlFor="input-lat">lat = </label>
             <input
               required
               type="number"
-              name="siteLat"
-              id="siteLat"
+              name="input-lat"
+              id="input-lat"
               value={megalithMarkerPosition[0]}
+              readOnly
             />
           </p>
           <p>
-            <label htmlFor="siteLat">lon = </label>
+            <label htmlFor="input-lon">lon = </label>
             <input
               required
               type="number"
-              name="siteLon"
-              id="siteLon"
+              name="input-Lon"
+              id="input-lon"
               value={megalithMarkerPosition[1]}
+              readOnly
             />
           </p>
         </div>
