@@ -6,8 +6,11 @@ import departments from "../departments.json";
 import cities from "../cities.json";
 import monumentTypes from "../monumentTypes.json";
 import materials from "../materials.json";
+import states from "../states.json";
+import SvgMaker from "../components/SvgMaker";
 
 const Create = () => {
+  // HOOKS / PROPS
   const [mapKey, setMapKey] = useState(Date.now());
   const [siteName, setSiteName] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState(85);
@@ -39,13 +42,12 @@ const Create = () => {
     })
     .sort((a, b) => a.commune.localeCompare(b.commune));
 
-  const states = ["bon état", "état moyen", "mauvais état", "détruit"];
-
   const leafletIcon = new Icon({
     iconUrl: require("../icons/siteIcon.png"),
     iconSize: [30, 30],
   });
 
+  // HANDLERS
   const handleDepartmentChange = (event) => {
     const selectedCode = event.target.value;
     const selectedDepartment = departments.find(
@@ -102,14 +104,14 @@ const Create = () => {
   };
 
   const handleSizeChange = (event) => {
-    const newSize = event.target.value ? parseFloat(event.target.value) : null;
+    let newSize = event.target.value ? parseFloat(event.target.value) : null;
+    if (newSize < 0) newSize = Math.abs(newSize);
     setSize(newSize);
   };
 
   const handleWeightChange = (event) => {
-    const newWeight = event.target.value
-      ? parseFloat(event.target.value)
-      : null;
+    let newWeight = event.target.value ? parseFloat(event.target.value) : null;
+    if (newWeight < 0) newWeight = Math.abs(newWeight);
     setWeight(newWeight);
   };
 
@@ -141,25 +143,56 @@ const Create = () => {
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if (window.confirm("Êtes-vous sûr de vouloir soumettre le formulaire ?")) {
-      console.log("Données du formulaire :", {
-        siteName,
-        selectedDepartment,
-        selectedMonumentType,
-        description,
-        photos,
-        selectedState,
-        publicAccess,
-        selectedMaterial,
-        size,
-        weight,
-        currentLocation,
-        megalithMarkerPosition,
-      });
+      const currentDate = new Date();
+      const day = currentDate.getDate().toString().padStart(2, "0");
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+      const year = currentDate.getFullYear().toString().padStart(4, "0");
+      const hours = currentDate.getHours().toString().padStart(2, "0");
+      const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+      const formattedDate = `${day}.${month}.${year}-${hours}.${minutes}`;
+      const formData = {
+        name: siteName,
+        department: selectedDepartment,
+        place: selectedCity,
+        type: selectedMonumentType,
+        description: description,
+        images: photos,
+        state: selectedState,
+        publicAccess: publicAccess,
+        material: selectedMaterial,
+        size: size,
+        weight: weight,
+        coords: {
+          lat: megalithMarkerPosition[0],
+          lon: megalithMarkerPosition[1],
+        },
+        date: formattedDate,
+        userId: localStorage.userId,
+      };
+      console.log(formData);
+      fetch("url_de_votre_backend", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Réponse du serveur :", data);
+          // Faites quelque chose avec la réponse du serveur, par exemple, redirigez l'utilisateur vers une autre page
+        })
+        .catch((error) => {
+          console.error("Erreur lors de l'envoi de la requête :", error);
+          // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
+        });
     }
   };
 
+  // RENDER
   return (
     <section id="createSection">
       <h2>Ajouter un Mégalithe</h2>
@@ -248,41 +281,70 @@ const Create = () => {
           required
           id="input-file1"
           type="file"
+          accept="image/*"
           onChange={(e) => handlePhotoUpload(e, 0)}
         />
         <br />
-        <label htmlFor="input-file2">Ajouter une deuxième photo :</label>
-        <br />
-        <input
-          id="input-file2"
-          type="file"
-          onChange={(e) => handlePhotoUpload(e, 1)}
-        />
-        <br />
-        <label htmlFor="input-file3">Ajouter une troisième photo :</label>
-        <br />
-        <input
-          id="input-file3"
-          type="file"
-          onChange={(e) => handlePhotoUpload(e, 2)}
-        />
-        <br />
-        <label htmlFor="input-file4">Ajouter une quatrième photo :</label>
-        <br />
-        <input
-          id="input-file4"
-          type="file"
-          onChange={(e) => handlePhotoUpload(e, 3)}
-        />
-        <br />
-        <label htmlFor="input-file5">Ajouter une cinquième photo :</label>
-        <br />
-        <input
-          id="input-file5"
-          type="file"
-          onChange={(e) => handlePhotoUpload(e, 4)}
-        />
-        <br />
+        {photos[0] != null ? (
+          <>
+            <label htmlFor="input-file2">Ajouter une deuxième photo :</label>
+            <br />
+            <input
+              id="input-file2"
+              type="file"
+              accept="image/*"
+              onChange={(e) => handlePhotoUpload(e, 1)}
+            />
+            <br />
+          </>
+        ) : (
+          ""
+        )}
+        {photos[1] != null ? (
+          <>
+            <label htmlFor="input-file3">Ajouter une troisième photo :</label>
+            <br />
+            <input
+              id="input-file3"
+              type="file"
+              accept="image/*"
+              onChange={(e) => handlePhotoUpload(e, 2)}
+            />
+            <br />
+          </>
+        ) : (
+          ""
+        )}
+        {photos[2] != null ? (
+          <>
+            <label htmlFor="input-file4">Ajouter une quatrième photo :</label>
+            <br />
+            <input
+              id="input-file4"
+              type="file"
+              accept="image/*"
+              onChange={(e) => handlePhotoUpload(e, 3)}
+            />
+            <br />
+          </>
+        ) : (
+          ""
+        )}
+        {photos[3] != null ? (
+          <>
+            <label htmlFor="input-file5">Ajouter une cinquième photo :</label>
+            <br />
+            <input
+              id="input-file5"
+              type="file"
+              accept="image/*"
+              onChange={(e) => handlePhotoUpload(e, 4)}
+            />
+            <br />
+          </>
+        ) : (
+          ""
+        )}
         {photos.length >= 1 && (
           <div id="photoPreview">
             <div>{photos[0] && <img src={photos[0]} alt="Photo 1" />}</div>
@@ -336,6 +398,7 @@ const Create = () => {
           id="input-size"
           type="number"
           value={size !== null ? size : ""}
+          min="0"
           onChange={handleSizeChange}
         />{" "}
         mètres
@@ -346,6 +409,7 @@ const Create = () => {
           type="number"
           step="any"
           value={weight !== null ? weight : ""}
+          min="0"
           onChange={handleWeightChange}
         />{" "}
         tonnes
@@ -399,7 +463,7 @@ const Create = () => {
             <Popup>{siteName !== "" ? siteName : "nouveau site"}</Popup>
           </Marker>
         </MapContainer>
-        <button onClick={handleSubmit}>
+        <button onClick={(event) => handleSubmit(event)}>
           Valider la création du nouveau site
         </button>
         <p>

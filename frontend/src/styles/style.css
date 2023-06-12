@@ -335,7 +335,12 @@ h2 {
     height: 17vw;
     background: var(--color2);
     border-radius: 2vw;
+    border: solid 1px var(--color3);
     overflow: hidden;
+}
+
+#createSection svg {
+    fill: var(--color4);
 }
 
 #photoPreview img {
