@@ -95,6 +95,16 @@ const Create = () => {
     setPhotos(updatedPhotos);
   };
 
+  const handleSuppressPhoto = (inputId, index) => {
+    console.log("done");
+    const input = document.getElementById(inputId);
+    input.type = "text";
+    input.type = "file";
+    let updatedPhotos = [...photos];
+    updatedPhotos[index] = null;
+    setPhotos(updatedPhotos);
+  };
+
   const handleMaterialChange = (event) => {
     setSelectedMaterial(event.target.value);
   };
@@ -284,6 +294,12 @@ const Create = () => {
           accept="image/*"
           onChange={(e) => handlePhotoUpload(e, 0)}
         />
+        {photos[0] && (
+          <SvgMaker
+            item="trash"
+            onClick={() => handleSuppressPhoto("input-file1", 0)}
+          />
+        )}
         <br />
         {photos[0] != null ? (
           <>
@@ -295,6 +311,12 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 1)}
             />
+            {photos[1] && (
+              <SvgMaker
+                item="trash"
+                onClick={() => handleSuppressPhoto("input-file2", 1)}
+              />
+            )}
             <br />
           </>
         ) : (
@@ -310,6 +332,12 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 2)}
             />
+            {photos[2] && (
+              <SvgMaker
+                item="trash"
+                onClick={() => handleSuppressPhoto("input-file3", 2)}
+              />
+            )}
             <br />
           </>
         ) : (
@@ -325,6 +353,12 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 3)}
             />
+            {photos[2] && (
+              <SvgMaker
+                item="trash"
+                onClick={() => handleSuppressPhoto("input-file4", 3)}
+              />
+            )}
             <br />
           </>
         ) : (
@@ -340,12 +374,18 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 4)}
             />
+            {photos[4] && (
+              <SvgMaker
+                item="trash"
+                onClick={() => handleSuppressPhoto("input-file5", 4)}
+              />
+            )}
             <br />
           </>
         ) : (
           ""
         )}
-        {photos.length >= 1 && (
+        {photos && (
           <div id="photoPreview">
             <div>{photos[0] && <img src={photos[0]} alt="Photo 1" />}</div>
             <div>{photos[1] && <img src={photos[1]} alt="Photo 2" />}</div>

@@ -2,7 +2,7 @@ import React from "react";
 
 const SvgMaker = (props) => {
   switch (props.item) {
-    case "garbage":
+    case "trash":
       return (
         <svg viewBox="0 -960 960 960" name={props.name}>
           <path
