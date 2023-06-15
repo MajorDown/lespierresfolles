@@ -294,14 +294,8 @@ const Create = () => {
           accept="image/*"
           onChange={(e) => handlePhotoUpload(e, 0)}
         />
-        {photos[0] && (
-          <SvgMaker
-            item="trash"
-            onClick={() => handleSuppressPhoto("input-file1", 0)}
-          />
-        )}
         <br />
-        {photos[0] != null ? (
+        {photos[0] && (
           <>
             <label htmlFor="input-file2">Ajouter une deuxième photo :</label>
             <br />
@@ -311,18 +305,10 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 1)}
             />
-            {photos[1] && (
-              <SvgMaker
-                item="trash"
-                onClick={() => handleSuppressPhoto("input-file2", 1)}
-              />
-            )}
             <br />
           </>
-        ) : (
-          ""
         )}
-        {photos[1] != null ? (
+        {photos[1] && (
           <>
             <label htmlFor="input-file3">Ajouter une troisième photo :</label>
             <br />
@@ -332,18 +318,10 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 2)}
             />
-            {photos[2] && (
-              <SvgMaker
-                item="trash"
-                onClick={() => handleSuppressPhoto("input-file3", 2)}
-              />
-            )}
             <br />
           </>
-        ) : (
-          ""
         )}
-        {photos[2] != null ? (
+        {photos[2] && (
           <>
             <label htmlFor="input-file4">Ajouter une quatrième photo :</label>
             <br />
@@ -353,18 +331,10 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 3)}
             />
-            {photos[2] && (
-              <SvgMaker
-                item="trash"
-                onClick={() => handleSuppressPhoto("input-file4", 3)}
-              />
-            )}
             <br />
           </>
-        ) : (
-          ""
         )}
-        {photos[3] != null ? (
+        {photos[3] && (
           <>
             <label htmlFor="input-file5">Ajouter une cinquième photo :</label>
             <br />
@@ -374,26 +344,16 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 4)}
             />
-            {photos[4] && (
-              <SvgMaker
-                item="trash"
-                onClick={() => handleSuppressPhoto("input-file5", 4)}
-              />
-            )}
             <br />
           </>
-        ) : (
-          ""
         )}
-        {photos && (
-          <div id="photoPreview">
-            <div>{photos[0] && <img src={photos[0]} alt="Photo 1" />}</div>
-            <div>{photos[1] && <img src={photos[1]} alt="Photo 2" />}</div>
-            <div>{photos[2] && <img src={photos[2]} alt="Photo 3" />}</div>
-            <div>{photos[3] && <img src={photos[3]} alt="Photo 4" />}</div>
-            <div>{photos[4] && <img src={photos[4]} alt="Photo 5" />}</div>
-          </div>
-        )}
+        <div id="photoPreview">
+          <div>{photos[0] && <img src={photos[0]} alt="Photo 1" />}</div>
+          <div>{photos[1] && <img src={photos[1]} alt="Photo 2" />}</div>
+          <div>{photos[2] && <img src={photos[2]} alt="Photo 3" />}</div>
+          <div>{photos[3] && <img src={photos[3]} alt="Photo 4" />}</div>
+          <div>{photos[4] && <img src={photos[4]} alt="Photo 5" />}</div>
+        </div>
         <label htmlFor="input-state">
           Décrivez l'état de conservation du site :
         </label>
