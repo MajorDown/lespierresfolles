@@ -294,6 +294,9 @@ const Create = () => {
           accept="image/*"
           onChange={(e) => handlePhotoUpload(e, 0)}
         />
+        <div className="photoPreview">
+          {photos[0] && <img src={photos[0]} alt="Photo 1" />}
+        </div>
         <br />
         {photos[0] && (
           <>
@@ -305,6 +308,9 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 1)}
             />
+            <div className="photoPreview">
+              {photos[1] && <img src={photos[1]} alt="Photo 2" />}
+            </div>
             <br />
           </>
         )}
@@ -318,6 +324,9 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 2)}
             />
+            <div className="photoPreview">
+              {photos[2] && <img src={photos[2]} alt="Photo 3" />}
+            </div>
             <br />
           </>
         )}
@@ -331,6 +340,9 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 3)}
             />
+            <div className="photoPreview">
+              {photos[3] && <img src={photos[3]} alt="Photo 4" />}
+            </div>
             <br />
           </>
         )}
@@ -344,16 +356,12 @@ const Create = () => {
               accept="image/*"
               onChange={(e) => handlePhotoUpload(e, 4)}
             />
+            <div className="photoPreview">
+              {photos[4] && <img src={photos[4]} alt="Photo 5" />}
+            </div>
             <br />
           </>
         )}
-        <div id="photoPreview">
-          <div>{photos[0] && <img src={photos[0]} alt="Photo 1" />}</div>
-          <div>{photos[1] && <img src={photos[1]} alt="Photo 2" />}</div>
-          <div>{photos[2] && <img src={photos[2]} alt="Photo 3" />}</div>
-          <div>{photos[3] && <img src={photos[3]} alt="Photo 4" />}</div>
-          <div>{photos[4] && <img src={photos[4]} alt="Photo 5" />}</div>
-        </div>
         <label htmlFor="input-state">
           Décrivez l'état de conservation du site :
         </label>

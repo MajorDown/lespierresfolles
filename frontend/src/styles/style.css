@@ -328,12 +328,7 @@ h2 {
     padding: 1vw;
 }
 
-#photoPreview {
-    display: flex;
-    gap: 1vw;
-}
-
-#photoPreview div {
+.photoPreview {
     position: relative;
     display: flex;
     justify-content: center;
