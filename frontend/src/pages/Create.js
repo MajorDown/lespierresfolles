@@ -13,13 +13,13 @@ const Create = () => {
   // HOOKS / PROPS
   const [mapKey, setMapKey] = useState(Date.now());
   const [siteName, setSiteName] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState(85);
+  const [selectedDepartment, setSelectedDepartment] = useState(75);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedMonumentType, setSelectedMonumentType] = useState("");
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState("inconnu");
-  const [selectedState, setSelectedState] = useState("");
+  const [selectedState, setSelectedState] = useState("état moyen");
   const [size, setSize] = useState(null);
   const [weight, setWeight] = useState(null);
   const [publicAccess, setPublicAccess] = useState(true);
@@ -96,12 +96,12 @@ const Create = () => {
   };
 
   const handleSuppressPhoto = (inputId, index) => {
-    console.log("done");
     const input = document.getElementById(inputId);
     input.type = "text";
     input.type = "file";
     let updatedPhotos = [...photos];
-    updatedPhotos[index] = null;
+    // updatedPhotos[index] = null;
+    updatedPhotos.splice(index, 1);
     setPhotos(updatedPhotos);
   };
 
@@ -283,85 +283,135 @@ const Create = () => {
           value={description}
         ></textarea>
         <br />
-        <label htmlFor="input-file1">
-          Ajouter une première photo<span>*</span> :
-        </label>
-        <br />
-        <input
-          required
-          id="input-file1"
-          type="file"
-          accept="image/*"
-          onChange={(e) => handlePhotoUpload(e, 0)}
-        />
-        <div className="photoPreview">
-          {photos[0] && <img src={photos[0]} alt="Photo 1" />}
+        <div className="input-container">
+          <label htmlFor="input-file1">
+            Ajouter une première photo<span>*</span> :
+          </label>
+          <br />
+          <input
+            required
+            id="input-file1"
+            type="file"
+            accept="image/*"
+            onChange={(e) => handlePhotoUpload(e, 0)}
+          />
+          <div className="photoPreview">
+            {photos[0] && <img src={photos[0]} alt="Photo 1" />}
+          </div>
+          {photos[0] && (
+            <button
+              className="btn-trash"
+              onClick={() => handleSuppressPhoto("input-file1", 0)}
+            >
+              <SvgMaker item="trash" />
+            </button>
+          )}
         </div>
         <br />
-        {photos[0] && (
-          <>
-            <label htmlFor="input-file2">Ajouter une deuxième photo :</label>
-            <br />
-            <input
-              id="input-file2"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handlePhotoUpload(e, 1)}
-            />
-            <div className="photoPreview">
-              {photos[1] && <img src={photos[1]} alt="Photo 2" />}
-            </div>
-            <br />
-          </>
-        )}
-        {photos[1] && (
-          <>
-            <label htmlFor="input-file3">Ajouter une troisième photo :</label>
-            <br />
-            <input
-              id="input-file3"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handlePhotoUpload(e, 2)}
-            />
-            <div className="photoPreview">
-              {photos[2] && <img src={photos[2]} alt="Photo 3" />}
-            </div>
-            <br />
-          </>
-        )}
-        {photos[2] && (
-          <>
-            <label htmlFor="input-file4">Ajouter une quatrième photo :</label>
-            <br />
-            <input
-              id="input-file4"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handlePhotoUpload(e, 3)}
-            />
-            <div className="photoPreview">
-              {photos[3] && <img src={photos[3]} alt="Photo 4" />}
-            </div>
-            <br />
-          </>
-        )}
-        {photos[3] && (
-          <>
-            <label htmlFor="input-file5">Ajouter une cinquième photo :</label>
-            <br />
-            <input
-              id="input-file5"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handlePhotoUpload(e, 4)}
-            />
-            <div className="photoPreview">
-              {photos[4] && <img src={photos[4]} alt="Photo 5" />}
-            </div>
-            <br />
-          </>
-        )}
+        <div className="input-container">
+          {photos[0] && (
+            <>
+              <label htmlFor="input-file2">Ajouter une deuxième photo :</label>
+              <br />
+              <input
+                id="input-file2"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handlePhotoUpload(e, 1)}
+              />
+              <div className="photoPreview">
+                {photos[1] && <img src={photos[1]} alt="Photo 2" />}
+              </div>
+              {photos[1] && (
+                <button
+                  className="btn-trash"
+                  onClick={() => handleSuppressPhoto("input-file2", 1)}
+                >
+                  <SvgMaker item="trash" />
+                </button>
+              )}
+            </>
+          )}
+        </div>
+        <div className="input-container">
+          {photos[1] && (
+            <>
+              <label htmlFor="input-file3">Ajouter une troisième photo :</label>
+              <br />
+              <input
+                id="input-file3"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handlePhotoUpload(e, 2)}
+              />
+              <div className="photoPreview">
+                {photos[2] && <img src={photos[2]} alt="Photo 3" />}
+              </div>
+              {photos[2] && (
+                <button
+                  className="btn-trash"
+                  onClick={() => handleSuppressPhoto("input-file3", 2)}
+                >
+                  <SvgMaker item="trash" />
+                </button>
+              )}
+              <br />
+            </>
+          )}
+        </div>
+        <div className="input-container">
+          {photos[2] && (
+            <>
+              <label htmlFor="input-file4">Ajouter une quatrième photo :</label>
+              <br />
+              <input
+                id="input-file4"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handlePhotoUpload(e, 3)}
+              />
+              <div className="photoPreview">
+                {photos[3] && <img src={photos[3]} alt="Photo 4" />}
+              </div>
+              {photos[3] && (
+                <button
+                  className="btn-trash"
+                  onClick={() => handleSuppressPhoto("input-file4", 3)}
+                >
+                  <SvgMaker item="trash" />
+                </button>
+              )}
+              <br />
+            </>
+          )}
+        </div>
+        <div className="input-container">
+          {photos[3] && (
+            <>
+              <label htmlFor="input-file5">Ajouter une cinquième photo :</label>
+              <br />
+              <input
+                id="input-file5"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handlePhotoUpload(e, 4)}
+              />
+              <div className="photoPreview">
+                {photos[4] && <img src={photos[4]} alt="Photo 5" />}
+              </div>
+              {photos[4] && (
+                <button
+                  className="btn-trash"
+                  onClick={() => handleSuppressPhoto("input-file5", 4)}
+                >
+                  <SvgMaker item="trash" />
+                </button>
+              )}
+              <br />
+            </>
+          )}
+        </div>
+        <br />
         <label htmlFor="input-state">
           Décrivez l'état de conservation du site :
         </label>

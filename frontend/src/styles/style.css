@@ -296,6 +296,16 @@ h2 {
     max-width: 50vw;
 }
 
+#createSection .input-container {
+    position: relative;
+}
+
+#createSection .btn-trash {
+    position: absolute;
+    top: 17vw;
+    left: 20vw;
+}
+
 #createSection input:not([type="file"]) {
     border-radius: 2vw;
     border: var(--color4) 0.5vw solid;
@@ -312,6 +322,12 @@ h2 {
     padding: 1vw;
     background: var(--color3);
     color: var(--color4);
+}
+
+#createSection svg {
+    fill: var(--color4);
+    width: 5vw;
+    height: 5vw;
 }
 
 #createSection input[type="file"]::file-selector-button {
@@ -341,16 +357,10 @@ h2 {
     overflow: hidden;
 }
 
-#createSection svg {
-    fill: var(--color4);
-    width: 5vw;
-    height: 5vw;
-}
 
-#photoPreview img {
+.photoPreview img {
     max-width: 100%;
     max-height: 100%;
-    border-radius: 2vw;
 }
 
 #mapForm {
