@@ -57,6 +57,17 @@ header p {
     line-height: 4vw;
 }
 
+#headerOptions {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#welcomer {
+    font-size: 2.5vw;
+    text-align: end;
+}
+
 #headerNav {
     display: flex;
     justify-content: flex-end;
@@ -389,6 +400,57 @@ h2 {
 #input-name {
     padding: 1vw;
     width: 100%;
+}
+
+/**********CONNEXION*******************/
+
+#connexionSection {
+    min-height: 80vh;
+}
+
+#connexionSection form {
+    margin: 0 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#connexionSection p,
+#connexionSection button {
+    margin: 2vw auto;
+    text-align: center;
+}
+
+#connexionSection div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginMsgError,
+#signinMsgError,
+#nextMdpMsgError {
+    color: red;
+}
+
+#connexionSection input {
+    border-radius: 2vw;
+    border: var(--color4) 0.5vw solid;
+    margin: 1vw 0 1vw 0;
+    padding: 0.5vw;
+    background: var(--color3);
+    color: var(--color4);
+}
+
+#connexionSection button {
+    border-radius: 2vw;
+    border: var(--color4) 0.5vw solid;
+    margin: 1vw auto;
+    padding: 1vw;
+    background: var(--color3);
+    color: var(--color4);
 }
 
 /**********FOOTER******************/
