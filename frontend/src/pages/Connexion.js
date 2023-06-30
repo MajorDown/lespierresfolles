@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+const API_URL = "http://localhost:11055";
 
 const Connexion = () => {
   // STATES
@@ -24,7 +25,7 @@ const Connexion = () => {
       userId: userInput,
       mdp: mdpInput,
     };
-    fetch("url_de_votre_api/login", {
+    fetch(`${API_URL}/api/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +66,7 @@ const Connexion = () => {
         userId: newUserInput,
         password: newMdp1Input,
       };
-      fetch("url_de_votre_api/signup", {
+      fetch(`${API_URL}/api/user/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -165,7 +166,7 @@ const Connexion = () => {
             <label htmlFor="newMdp1">Votre mot de passe :</label>
             <input
               required
-              type="text"
+              type="password"
               name="newMdp1"
               id="newMdp1"
               value={newMdp1Input}
@@ -174,7 +175,7 @@ const Connexion = () => {
             <label htmlFor="newMdp2">Confirmez votre mot de passe :</label>
             <input
               required
-              type="text"
+              type="password"
               name="newMdp2"
               id="newMdp2"
               value={newMdp2Input}
@@ -204,7 +205,7 @@ const Connexion = () => {
             <form onSubmit={(e) => handlePasswordChange(e)}>
               <label htmlFor="prevMdp">Votre ancien mot de passe :</label>
               <input
-                type="text"
+                type="password"
                 name="prevMdp"
                 id="prevMdp"
                 value={prevMdpInput}
@@ -212,7 +213,7 @@ const Connexion = () => {
               />
               <label htmlFor="nextMdp1">Votre nouveau mot de passe : </label>
               <input
-                type="text"
+                type="password"
                 name="nextMdp1"
                 id="nextMdp1"
                 value={nextMdp1Input}
@@ -222,7 +223,7 @@ const Connexion = () => {
                 Confirmez votre nouveau mot de passe :{" "}
               </label>
               <input
-                type="text"
+                type="password"
                 name="nextMdp2"
                 id="nextMdp2"
                 value={nextMdp2Input}
