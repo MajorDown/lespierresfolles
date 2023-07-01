@@ -184,6 +184,11 @@ const Connexion = () => {
             {signinErrorMessage && (
               <p id="signinMsgError">{signinErrorMessage}</p>
             )}
+            <p>
+              En vous inscrivant sur notre application, vous reconnaissez avoir
+              pri connaissance des conditions d'utilisation et de notre
+              politiques de confidentialité
+            </p>
             <button type="submit">S'inscrire</button>
             {isSigned && (
               <p>
