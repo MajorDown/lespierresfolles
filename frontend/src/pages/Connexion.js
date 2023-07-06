@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-const API_URL = "http://localhost:11055";
+const API_URL = "http://localhost:4000";
 
 const Connexion = () => {
   // STATES
@@ -23,9 +23,10 @@ const Connexion = () => {
     e.preventDefault();
     const loginData = {
       userId: userInput,
-      mdp: mdpInput,
+      password: mdpInput,
     };
-    fetch(`${API_URL}/api/user/login`, {
+
+    fetch(`${API_URL}/api/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +45,7 @@ const Connexion = () => {
         setUserId(userId);
         localStorage.setItem("userId", userId);
         localStorage.setItem("lpf_token", token);
-        window.location.href = "/accueil";
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Erreur lors de la connexion:", error);
@@ -56,9 +57,10 @@ const Connexion = () => {
     localStorage.removeItem("lpf-token");
     localStorage.removeItem("userId");
     setUserId(null);
+    window.location.reload();
   };
 
-  const handleSignIn = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
     if (signinErrorMessage === "") {
       const signupData = {
@@ -66,7 +68,7 @@ const Connexion = () => {
         userId: newUserInput,
         password: newMdp1Input,
       };
-      fetch(`${API_URL}/api/user/signin`, {
+      fetch(`${API_URL}/api/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +92,47 @@ const Connexion = () => {
     }
   };
 
-  const handlePasswordChange = (e) => {};
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    const passwordChangeData = {
+      userId: userId,
+      password: prevMdpInput,
+      newPassword: nextMdp1Input,
+    };
+    fetch(`${API_URL}/api/users/editUserPassword`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("lpf_token")}`,
+      },
+      body: JSON.stringify(passwordChangeData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Erreur lors de la modification du mot de passe");
+        }
+      })
+      .then((data) => {
+        console.log("Mot de passe modifié avec succès");
+        setNextMdpErrorMessage("Mot de passe modifié avec succès");
+        setTimeout(() => {
+          setNextMdpErrorMessage("");
+        }, 10000);
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la modification du mot de passe :",
+          error
+        );
+        setNextMdpErrorMessage("la modification du mot de passe a échoué");
+        setTimeout(() => {
+          setNextMdpErrorMessage("");
+        }, 10000);
+      });
+  };
 
   //INITIALISATIONS
   useEffect(() => {
@@ -141,7 +183,7 @@ const Connexion = () => {
           </form>
           <p>Vous n'avez pas encore de compte ?</p>
           <h2>Inscription</h2>
-          <form onSubmit={(e) => handleSignIn(e)}>
+          <form onSubmit={(e) => handleSignUp(e)}>
             <label htmlFor="mail">Votre adresse mail :</label>
             <input
               required

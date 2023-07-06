@@ -7,6 +7,7 @@ const {
 const {
   getListOfSites,
   getSite,
+  getLastSites,
   createSite,
   editSite,
   deleteSite,
@@ -16,6 +17,7 @@ const router = express.Router();
 
 router.get("/", getListOfSites);
 router.get("/:id", getSite);
+router.get("/last", getLastSites);
 router.post("/", tokenChecker, imageUploader, imageResizer, createSite);
 router.put("/:id", tokenChecker, imageUploader, imageResizer, editSite);
 router.delete("/:id", tokenChecker, deleteSite);

@@ -5,7 +5,7 @@ const Header = () => {
 
   useEffect(() => {
     setUser(localStorage.getItem("userId"));
-  }, [user]);
+  }, [localStorage.getItem("userId")]);
 
   return (
     <header>

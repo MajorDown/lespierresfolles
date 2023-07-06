@@ -5,7 +5,7 @@ const { tokenMaker } = require("../middlewares/tokenManager");
 // CREER UN UTILISATEUR
 module.exports.createUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, userId, password } = req.body;
     // VERIFIER SI L'UTILISATEUR EXISTE DEJA DANS LA DB
     const checkedUserMail = await UserModel.findOne({ email });
     if (checkedUserMail) {
@@ -13,8 +13,14 @@ module.exports.createUser = async (req, res) => {
         .status(400)
         .json({ message: "Cette adresse mail est déjà utilisée !" });
     }
+    const checkedUserId = await UserModel.findOne({ userId });
+    if (checkedUserId) {
+      return res
+        .status(400)
+        .json({ message: "Cet identifiant est déjà utilisée !" });
+    }
     // CREER UN UTILISATEUR
-    const newUser = new UserModel({ email, password });
+    const newUser = new UserModel({ email, userId, password });
     await newUser.save();
     res.status(201).json({ message: "Utilisateur créé avec succès" });
   } catch (err) {
@@ -30,11 +36,11 @@ module.exports.createUser = async (req, res) => {
 // CONNECTER UN UTILISATEUR
 module.exports.connectUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { userId, password } = req.body;
     // VERIFIER L'EXISTENCE DE L'UTILISATEUR DANS LA DB
-    const user = await UserModel.findOne({ email: email });
+    const user = await UserModel.findOne({ userId: userId });
     if (!user) {
-      return res.status(401).json({ message: "email / mdp incorrects" });
+      return res.status(401).json({ message: "identifiant / mdp incorrects" });
     }
     // VERIFIER SI LE MOT DE PASSE EST CORRECT
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -44,7 +50,7 @@ module.exports.connectUser = async (req, res) => {
     // GENERER LE TOKEN
     const token = tokenMaker(user._id);
     res.status(200).json({
-      userId: user._id,
+      userId: user.userId,
       token: token,
     });
   } catch (err) {
@@ -52,6 +58,33 @@ module.exports.connectUser = async (req, res) => {
     console.error(err);
     res.status(500).json({
       message: "Une erreur s'est produite lors de votre tentative de connexion",
+      err: err,
+    });
+  }
+};
+
+// MODIFIER UN PASSWORD
+module.exports.editUserPassword = async (req, res) => {
+  try {
+    const { userId, password, newPassword } = req.body;
+    const user = await UserModel.findOne({ userId: userId });
+    // VERIFIER SI LE MOT DE PASSE EST CORRECT
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (passwordMatch) {
+      const updatedUser = await UserModel.updateOne(
+        { _id: user._id },
+        { password: newPassword }
+      );
+      res.status(200).json({ message: "Mot de passe modifié avec succès" });
+    } else {
+      res.status(401).json({ message: "Mot de passe actuel incorrect" });
+    }
+    // GESTION DES ERREURS
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message:
+        "Une erreur s'est produite lors de votre tentative de modification du mot de passe",
       err: err,
     });
   }
