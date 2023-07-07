@@ -23,7 +23,7 @@ const SitesSchema = new mongoose.Schema({
     url5: { type: String, required: false },
   },
   userId: { type: String, required: true },
-  date: { type: Number, required: true },
+  date: { type: String, required: true },
   posts: [{ date: { type: String, required: true } }],
 });
 

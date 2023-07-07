@@ -1,9 +1,6 @@
 const express = require("express");
 const { tokenChecker } = require("../middlewares/tokenManager");
-const {
-  imageUploader,
-  imageResizer,
-} = require("../middlewares/sharpAndMulter");
+const imageUploader = require("../middlewares/imageUploader.js");
 const {
   getListOfSites,
   getSite,
@@ -18,8 +15,8 @@ const router = express.Router();
 router.get("/", getListOfSites);
 router.get("/:id", getSite);
 router.get("/last", getLastSites);
-router.post("/", tokenChecker, imageUploader, imageResizer, createSite);
-router.put("/:id", tokenChecker, imageUploader, imageResizer, editSite);
+router.post("/", tokenChecker, imageUploader, createSite);
+router.put("/:id", tokenChecker, editSite);
 router.delete("/:id", tokenChecker, deleteSite);
 router.post("/:id/post", tokenChecker, postOnSite);
 

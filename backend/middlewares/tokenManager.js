@@ -14,15 +14,16 @@ module.exports.tokenChecker = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {
-      throw new Error("Vous n'êtes pas authentifié !");
+      throw new Error("tokenChecker ~> Vous n'êtes pas authentifié !");
     }
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
     const user = await UserModel.findById(userId);
     if (!user) {
-      throw new Error("Utilisateur introuvable");
+      throw new Error("tokenChecker ~> Utilisateur introuvable");
     }
     req.user = user;
+    console.log("tokenChecker ~> requète autorisé");
     next();
   } catch (err) {
     console.error(err);

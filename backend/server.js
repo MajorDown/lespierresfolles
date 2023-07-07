@@ -18,4 +18,6 @@ server.use("/api/sites", require("./routes/sites.routes"));
 server.use("/api/users", require("./routes/users.routes"));
 
 // LANCER LE SERVEUR
-server.listen(port, () => console.log("~> Serveur lancé sur le port " + port));
+server.listen(port, () =>
+  console.log("server ~> lancement sur le port " + port)
+);

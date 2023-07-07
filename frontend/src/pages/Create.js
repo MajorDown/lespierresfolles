@@ -8,6 +8,7 @@ import monumentTypes from "../monumentTypes.json";
 import materials from "../materials.json";
 import states from "../states.json";
 import SvgMaker from "../components/SvgMaker";
+const BACKEND_URL = "http://localhost:4000";
 
 const Create = () => {
   // HOOKS / PROPS
@@ -15,7 +16,7 @@ const Create = () => {
   const [siteName, setSiteName] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState(75);
   const [selectedCity, setSelectedCity] = useState("");
-  const [selectedMonumentType, setSelectedMonumentType] = useState("");
+  const [selectedMonumentType, setSelectedMonumentType] = useState("dolmen");
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
   const [selectedMaterial, setSelectedMaterial] = useState("inconnu");
@@ -163,40 +164,46 @@ const Create = () => {
       const hours = currentDate.getHours().toString().padStart(2, "0");
       const minutes = currentDate.getMinutes().toString().padStart(2, "0");
       const formattedDate = `${day}.${month}.${year}-${hours}.${minutes}`;
-      const formData = {
-        name: siteName,
-        department: selectedDepartment,
-        place: selectedCity,
-        type: selectedMonumentType,
-        description: description,
-        images: photos,
-        state: selectedState,
-        publicAccess: publicAccess,
-        material: selectedMaterial,
-        size: size,
-        weight: weight,
-        coords: {
-          lat: megalithMarkerPosition[0],
-          lon: megalithMarkerPosition[1],
-        },
-        date: formattedDate,
-        userId: localStorage.userId,
-      };
+
+      const formData = new FormData();
+      formData.append("name", siteName);
+      formData.append("department", selectedDepartment);
+      formData.append("place", selectedCity);
+      formData.append("type", selectedMonumentType);
+      formData.append("description", description);
+      formData.append("image1", photos[0]);
+      const inputFiles = document.querySelectorAll('input[type="file"]');
+      inputFiles.forEach((fileInput, index) => {
+        const files = fileInput.files;
+        if (files.length > 0) {
+          formData.append(`image${index + 1}`, files[0]);
+        }
+      });
+      formData.append("state", selectedState);
+      formData.append("publicAccess", publicAccess);
+      formData.append("material", selectedMaterial);
+      formData.append("size", size);
+      formData.append("weight", weight);
+      formData.append("coords", megalithMarkerPosition);
+      formData.append("date", formattedDate);
+      formData.append("userId", localStorage.userId);
+
       console.log(formData);
-      fetch("url_de_votre_backend", {
+
+      fetch(`${BACKEND_URL}/api/sites/`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("lpf_token")}`,
         },
-        body: JSON.stringify(formData),
+        body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Réponse du serveur :", data);
+          console.log("site créé !", data);
           // Faites quelque chose avec la réponse du serveur, par exemple, redirigez l'utilisateur vers une autre page
         })
         .catch((error) => {
-          console.error("Erreur lors de l'envoi de la requête :", error);
+          console.error("Erreur lors de la création du site :", error);
           // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
         });
     }

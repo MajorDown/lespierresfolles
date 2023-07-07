@@ -1,10 +1,11 @@
 const { imageEraser } = require("../middlewares/imageEraser");
-const BookModel = require("../models/sites.model");
+const SiteModel = require("../models/sites.model");
 
 // OBTENIR LES SITES
 module.exports.getListOfSites = async (req, res) => {
   try {
     console.log("requète : 'getListOfSites'");
+
     // GESTION DES ERREURS
   } catch (err) {
     console.error(err);
@@ -43,20 +44,69 @@ module.exports.getLastSites = async (req, res) => {
   }
 };
 
-// CREATION D'UN BOOK
+// CREATION D'UN SITE
 module.exports.createSite = async (req, res) => {
   try {
-    console.log("requète : 'createSite'");
-    // GESTION DES ERREURS
+    console.log("createSite ~> en cours de traitement");
+    console.log(req.body);
+    // EXTRACTION DES DONNES
+    const {
+      name,
+      place,
+      department,
+      coords,
+      type,
+      publicAccess,
+      description,
+      size,
+      weight,
+      material,
+      state,
+      userId,
+      date,
+    } = req.body;
+    const images = {
+      url1: req.files && req.files[0] ? req.files[0].filename : "",
+      url2: req.files && req.files[1] ? req.files[1].filename : "",
+      url3: req.files && req.files[2] ? req.files[2].filename : "",
+      url4: req.files && req.files[3] ? req.files[3].filename : "",
+      url5: req.files && req.files[4] ? req.files[4].filename : "",
+    };
+    // CREATION D'UN NOUVEAU SITE
+    const newSite = new SiteModel({
+      name,
+      place,
+      department,
+      coords: {
+        lat: parseFloat(coords[0]),
+        lon: parseFloat(coords[1]),
+      },
+      type,
+      publicAccess,
+      description,
+      size,
+      weight,
+      material,
+      state,
+      images,
+      userId,
+      date,
+      posts: [],
+    });
+    // AJOUT DANS LA DB
+    const savedSite = await newSite.save();
+    console.log("createSite ~> nouveau site créé dans la base de donnée");
+    res.status(200).json({ message: "Requête effectuée", site: savedSite });
   } catch (err) {
+    console.log("createSite ~> la création du site à échoué :", err);
     res.status(500).json({
       message: "Une erreur s'est produite lors de la création du site",
-      err: err,
+      err: err.message,
     });
   }
 };
 
-// MODIFIER UN BOOK
+// MODIFIER UN SITE
 module.exports.editSite = async (req, res) => {
   try {
     console.log("requète : 'editSite'");
@@ -70,7 +120,7 @@ module.exports.editSite = async (req, res) => {
   }
 };
 
-// SUPPRIMER UN BOOK
+// SUPPRIMER UN SITE
 module.exports.deleteSite = async (req, res) => {
   try {
     console.log("requète : 'deleteSite'");
@@ -83,7 +133,7 @@ module.exports.deleteSite = async (req, res) => {
   }
 };
 
-// NOTER UN BOOK
+// COMMENTER UN SITE
 module.exports.postOnSite = async (req, res) => {
   try {
     console.log("requète : 'postOnSites'");
