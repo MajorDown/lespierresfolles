@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     const extension = path.extname(file.originalname);
     const filename = name + Date.now() + extension;
 
-    console.log("imageUploader ~> Nouveau fichier uploadé");
+    console.log("imageUploader ~> Nouveau fichier uploadé :", filename);
     callback(null, filename);
   },
 });

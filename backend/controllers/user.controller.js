@@ -22,10 +22,14 @@ module.exports.createUser = async (req, res) => {
     // CREER UN UTILISATEUR
     const newUser = new UserModel({ email, userId, password });
     await newUser.save();
+    console.log("createUser ~>", newUser.userId, "viens de créer son compte");
     res.status(201).json({ message: "Utilisateur créé avec succès" });
   } catch (err) {
     // GESTION DES ERREURS
-    console.error(err);
+    console.log(
+      "createUser ~> un problême est survenue lors de la création du compte :",
+      err
+    );
     res.status(500).json({
       message: "Une erreur s'est produite lors de la création de votre compte",
       err: err,
@@ -53,9 +57,13 @@ module.exports.connectUser = async (req, res) => {
       userId: user.userId,
       token: token,
     });
+    console.log("connectUser ~>", user.userId, "viens de se connecter");
   } catch (err) {
     // GESTION DES ERREURS
-    console.error(err);
+    console.error(
+      "connectUser ~> une erreur est survenue lors de la tentative de connection : ",
+      err
+    );
     res.status(500).json({
       message: "Une erreur s'est produite lors de votre tentative de connexion",
       err: err,
@@ -75,13 +83,21 @@ module.exports.editUserPassword = async (req, res) => {
         { _id: user._id },
         { password: newPassword }
       );
+      console.log(
+        "editUserPassword ~>",
+        user.userId,
+        "viens de modifier son password"
+      );
       res.status(200).json({ message: "Mot de passe modifié avec succès" });
     } else {
       res.status(401).json({ message: "Mot de passe actuel incorrect" });
     }
     // GESTION DES ERREURS
   } catch (err) {
-    console.error(err);
+    console.error(
+      "connectUser ~> une erreur est survenue lors de la tentative de modification du password : ",
+      err
+    );
     res.status(500).json({
       message:
         "Une erreur s'est produite lors de votre tentative de modification du mot de passe",

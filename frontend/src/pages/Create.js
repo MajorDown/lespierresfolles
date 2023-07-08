@@ -44,8 +44,8 @@ const Create = () => {
     .sort((a, b) => a.commune.localeCompare(b.commune));
 
   const leafletIcon = new Icon({
-    iconUrl: require("../icons/siteIcon.png"),
-    iconSize: [30, 30],
+    iconUrl: require("../icons/monument.png"),
+    iconSize: [15, 30],
   });
 
   // HANDLERS

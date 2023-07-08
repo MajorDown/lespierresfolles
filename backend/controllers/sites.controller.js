@@ -4,11 +4,16 @@ const SiteModel = require("../models/sites.model");
 // OBTENIR LES SITES
 module.exports.getListOfSites = async (req, res) => {
   try {
-    console.log("requète : 'getListOfSites'");
-
-    // GESTION DES ERREURS
+    const { departement } = req.query;
+    let query = {};
+    if (departement) {
+      query.department = parseInt(departement);
+    }
+    const sites = await SiteModel.find(query);
+    console.log("getListOfSites ~> filtrage des sites");
+    res.status(200).json(sites);
   } catch (err) {
-    console.error(err);
+    console.log("getListOfSites ~> echec du filtrage :", err);
     res.status(500).json({
       message: "Une erreur s'est produite lors de la récupération des sites",
       err: err,
@@ -65,6 +70,8 @@ module.exports.createSite = async (req, res) => {
       userId,
       date,
     } = req.body;
+    // Convertir la chaîne de caractères en tableau
+    const coordinates = coords.split(",").map(parseFloat);
     const images = {
       url1: req.files && req.files[0] ? req.files[0].filename : "",
       url2: req.files && req.files[1] ? req.files[1].filename : "",
@@ -77,10 +84,7 @@ module.exports.createSite = async (req, res) => {
       name,
       place,
       department,
-      coords: {
-        lat: parseFloat(coords[0]),
-        lon: parseFloat(coords[1]),
-      },
+      coords: coordinates,
       type,
       publicAccess,
       description,
