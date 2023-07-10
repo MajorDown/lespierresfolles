@@ -11,7 +11,7 @@ const Router = () => {
     <Routes>
       <Route exact path={"/"} Component={Accueil} />
       <Route exact path={"/search"} Component={Search} />
-      <Route path="/site" Component={Site} />
+      <Route path="/sites/:id" Component={Site} />
       <Route path="/create" Component={Create} />
       <Route path="/connection" Component={Connexion} />
       <Route path="*" Component={Accueil} />

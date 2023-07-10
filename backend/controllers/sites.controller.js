@@ -24,10 +24,18 @@ module.exports.getListOfSites = async (req, res) => {
 // OBTENIR UN SITE
 module.exports.getSite = async (req, res) => {
   try {
-    console.log("requète : 'getSite'");
-    // GESTION DES ERREURS
+    const siteId = req.params.id;
+    const site = await SiteModel.findById(siteId);
+    if (!site) {
+      console.log("getSite ~> site inconnu de la base de donnée");
+      return res.status(404).json({
+        message: "Site non trouvé",
+      });
+    }
+    console.log("getSite ~> accès au site demandé");
+    res.status(200).json(site);
   } catch (err) {
-    console.error(err);
+    console.error("getSite ~> erreur lors de la récupération du site :", err);
     res.status(500).json({
       message: "Une erreur s'est produite lors de la récupération du site",
       err: err,
@@ -59,7 +67,8 @@ module.exports.createSite = async (req, res) => {
       name,
       place,
       department,
-      coords,
+      lat,
+      lon,
       type,
       publicAccess,
       description,
@@ -70,8 +79,6 @@ module.exports.createSite = async (req, res) => {
       userId,
       date,
     } = req.body;
-    // Convertir la chaîne de caractères en tableau
-    const coordinates = coords.split(",").map(parseFloat);
     const images = {
       url1: req.files && req.files[0] ? req.files[0].filename : "",
       url2: req.files && req.files[1] ? req.files[1].filename : "",
@@ -84,7 +91,7 @@ module.exports.createSite = async (req, res) => {
       name,
       place,
       department,
-      coords: coordinates,
+      coords: { lat: lat, lon: lon },
       type,
       publicAccess,
       description,

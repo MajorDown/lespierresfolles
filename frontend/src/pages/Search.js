@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
@@ -11,12 +12,20 @@ const Search = () => {
   const [mapKey, setMapKey] = useState(Date.now());
   const [selectedMonumentType, setSelectedMonumentType] = useState("");
   const [currentLocation, setCurrentLocation] = useState([0, 0]);
+  const [markers, setMarkers] = useState([]);
+
+  const createMarkers = (data) => {
+    return data.map((site) => ({
+      geocode: [site.coords.lat, site.coords.lon],
+      popUp: site.name,
+      id: site._id,
+    }));
+  };
 
   const userPosition = {
     geocode: currentLocation,
     popUp: "votre position",
   };
-  const markers = [];
 
   const monumentIcon = new Icon({
     iconUrl: require("../icons/monument.png"),
@@ -60,8 +69,9 @@ const Search = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const filters = {};
-    if (selectedDepartment) {
+    if (selectedDepartment && selectedMonumentType) {
       filters.departement = selectedDepartment;
+      filters.type = selectedMonumentType;
     }
     fetch(`${BACKEND_URL}/api/sites/?${new URLSearchParams(filters)}`, {
       method: "GET",
@@ -72,12 +82,8 @@ const Search = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("sites trouvés :", data);
-        data.map((site) => {
-          markers.push({
-            geocode: [site.coords.lat, site.coords.lon],
-            popUp: site.name,
-          });
-        });
+        const newMarkers = createMarkers(data);
+        setMarkers(newMarkers);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des sites :", error);
@@ -137,9 +143,7 @@ const Search = () => {
           return (
             <Marker key={index} position={marker.geocode} icon={monumentIcon}>
               <Popup>
-                {marker.popUp}
-                <br />
-                {marker.geocode[0]}, {marker.geocode[1]}
+                <Link to={`/sites/${marker.id}`}>{marker.popUp}</Link>
               </Popup>
             </Marker>
           );

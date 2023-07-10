@@ -184,7 +184,8 @@ const Create = () => {
       formData.append("material", selectedMaterial);
       formData.append("size", size);
       formData.append("weight", weight);
-      formData.append("coords", megalithMarkerPosition);
+      formData.append("lat", megalithMarkerPosition[0]);
+      formData.append("lon", megalithMarkerPosition[1]);
       formData.append("date", formattedDate);
       formData.append("userId", localStorage.userId);
 
