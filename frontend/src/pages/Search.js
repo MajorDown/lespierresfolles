@@ -114,8 +114,7 @@ const Search = () => {
             ))}
           </select>{" "}
           <br />
-          <label htmlFor="monumentType">Choisissez le type de monument :</label>
-          <br />
+          <label htmlFor="monumentType">Indiquez le type du monument : </label>
           <select
             value={selectedMonumentType}
             onChange={handleMonumentTypeChange}
@@ -126,7 +125,10 @@ const Search = () => {
             <option value="tumulus">Tumulus</option>
             <option value="autre">Autre</option>
           </select>
-          <button type="submit">Lancer la recherche</button>
+          <br />
+          <div className="btn-search">
+            <button type="submit">Lancer la recherche</button>
+          </div>
         </form>
         <p>Besoin de retrouver votre position ?</p>
         <button type="button" onClick={getLocation}>
