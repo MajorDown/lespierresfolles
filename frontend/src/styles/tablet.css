@@ -1,0 +1,30 @@
+svg {
+    width: 5vw;
+    height: 5vw;
+    transition: 0.3s;
+}
+
+/**********HEADER********************/
+h1 {
+    font-size: 4vw;
+    line-height: 5vw;
+}
+
+header p {
+    font-size: 2vw;
+    line-height: 3vw;
+}
+
+#welcomer {
+    font-size: 1.5vw;
+}
+
+/**********MAIN********************/
+section {
+    font-size: 2vw;
+}
+
+h2 {
+    font-size: 3vw;
+    line-height: 4vw;
+}
