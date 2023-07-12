@@ -1,0 +1,8 @@
+body {
+    max-width: 1440px;
+    background: url(/frontend/public/images/background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
