@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
@@ -8,10 +9,11 @@ import monumentTypes from "../monumentTypes.json";
 import materials from "../materials.json";
 import states from "../states.json";
 import SvgMaker from "../components/SvgMaker";
-const BACKEND_URL = "http://localhost:4000";
+const BACKEND_URL = "http://51.77.159.211:11007";
 
 const Create = () => {
   // HOOKS / PROPS
+  const navigate = useNavigate();
   const [mapKey, setMapKey] = useState(Date.now());
   const [siteName, setSiteName] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState(75);
@@ -201,6 +203,7 @@ const Create = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log("site créé !", data);
+          navigate(`/sites/${data.site._id}`);
           // Faites quelque chose avec la réponse du serveur, par exemple, redirigez l'utilisateur vers une autre page
         })
         .catch((error) => {

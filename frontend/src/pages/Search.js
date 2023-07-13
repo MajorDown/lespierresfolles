@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import departments from "../departments.json";
-const BACKEND_URL = "http://localhost:4000";
+const BACKEND_URL = "http://51.77.159.211:11007";
 
 const Search = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("75");

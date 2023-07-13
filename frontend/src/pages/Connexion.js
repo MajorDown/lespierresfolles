@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-const API_URL = "http://localhost:4000";
+const API_URL = "http://51.77.159.211:11007";
 
 const Connexion = () => {
   // STATES

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Accordion from "../components/Accordion";
 import { useParams } from "react-router-dom";
-const BACKEND_URL = "http://localhost:4000";
+const BACKEND_URL = "http://51.77.159.211:11007";
 
 const Site = () => {
   const { id } = useParams();
@@ -42,53 +42,66 @@ const Site = () => {
           </p>
           <div className="previewers">
             <div className="previewerLead">
-              <img src={`${BACKEND_URL}/images/${selectedImage}`} alt="" />
+              <img
+                src={`${BACKEND_URL}/images/${selectedImage}`}
+                alt="first image"
+              />
             </div>
             <div className="previewersList">
               <div
                 className="previewer"
                 onClick={() => handlePreviewerClick(siteData?.images?.url1)}
               >
-                <img
-                  src={`${BACKEND_URL}/images/${siteData?.images?.url1}`}
-                  alt="photo1"
-                />
+                {siteData.images.url1 && (
+                  <img
+                    src={`${BACKEND_URL}/images/${siteData?.images?.url1}`}
+                    alt="photo1"
+                  />
+                )}
               </div>
               <div
                 className="previewer"
                 onClick={() => handlePreviewerClick(siteData?.images?.url2)}
               >
-                <img
-                  src={`${BACKEND_URL}/images/${siteData?.images?.url2}`}
-                  alt="photo2"
-                />
+                {siteData.images.url2 && (
+                  <img
+                    src={`${BACKEND_URL}/images/${siteData?.images?.url2}`}
+                    alt="photo2"
+                  />
+                )}
               </div>
               <div
                 className="previewer"
                 onClick={() => handlePreviewerClick(siteData?.images?.url3)}
               >
-                <img
-                  src={`${BACKEND_URL}/images/${siteData?.images?.url3}`}
-                  alt="photo3"
-                />
+                {siteData.images.url3 && (
+                  <img
+                    src={`${BACKEND_URL}/images/${siteData?.images?.url3}`}
+                    alt="photo3"
+                  />
+                )}
               </div>
               <div
                 className="previewer"
                 onClick={() => handlePreviewerClick(siteData?.images?.url4)}
               >
-                <img
-                  src={`${BACKEND_URL}/images/${siteData?.images?.url4}`}
-                  alt="photo4"
-                />
+                {siteData.images.url4 && (
+                  <img
+                    src={`${BACKEND_URL}/images/${siteData?.images?.url4}`}
+                    alt="photo4"
+                  />
+                )}
               </div>
               <div
                 className="previewer"
                 onClick={() => handlePreviewerClick(siteData?.images?.url5)}
               >
-                <img
-                  src={`${BACKEND_URL}/images/${siteData?.images?.url5}`}
-                  alt="photo5"
-                />
+                {siteData.images.url5 && (
+                  <img
+                    src={`${BACKEND_URL}/images/${siteData?.images?.url5}`}
+                    alt="photo5"
+                  />
+                )}
               </div>
             </div>
             <p className="credits">crédit photos : {siteData.userId}</p>
