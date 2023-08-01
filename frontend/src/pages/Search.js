@@ -10,7 +10,7 @@ const Search = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("75");
   const [mapLocation, setMapLocation] = useState(departments[73].coords);
   const [mapKey, setMapKey] = useState(Date.now());
-  const [selectedMonumentType, setSelectedMonumentType] = useState("");
+  const [selectedMonumentType, setSelectedMonumentType] = useState("tous");
   const [currentLocation, setCurrentLocation] = useState([0, 0]);
   const [markers, setMarkers] = useState([]);
 
@@ -68,10 +68,11 @@ const Search = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const filters = {};
+    let filters = {};
     if (selectedDepartment && selectedMonumentType) {
-      filters.departement = selectedDepartment;
+      filters.departement = parseInt(selectedDepartment);
       filters.type = selectedMonumentType;
+      console.log(filters.departement);
     }
     fetch(`${BACKEND_URL}/api/sites/?${new URLSearchParams(filters)}`, {
       method: "GET",

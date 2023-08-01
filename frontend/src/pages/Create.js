@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
+import { resizeImage } from "../utils/resizeImage";
 import departments from "../departments.json";
 import cities from "../cities.json";
 import monumentTypes from "../monumentTypes.json";
@@ -90,12 +91,17 @@ const Create = () => {
     setSiteName(event.target.value);
   };
 
+  const resizeAndSetPhoto = async (file, index) => {
+    const resizedImage = await resizeImage(file, 1000, 1000);
+    const updatedPhotos = [...photos];
+    updatedPhotos[index] = URL.createObjectURL(resizedImage);
+    setPhotos(updatedPhotos);
+  };
+
   const handlePhotoUpload = (event, index) => {
     const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
-    const updatedPhotos = [...photos];
-    updatedPhotos[index] = url;
-    setPhotos(updatedPhotos);
+    if (!file) return; // Si aucun fichier n'a été sélectionné, ne rien faire
+    resizeAndSetPhoto(file, index);
   };
 
   const handleSuppressPhoto = (inputId, index) => {
