@@ -70,7 +70,10 @@ const Create = () => {
   const handleCityChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedCity(selectedValue);
-    const selectedCityData = cities.find(
+    const citiesInSelectedDepartment = cities.filter(
+      (city) => city.departmentCode === parseInt(selectedDepartment)
+    );
+    const selectedCityData = citiesInSelectedDepartment.find(
       (city) => city.commune === selectedValue
     );
     if (selectedCityData && selectedCityData.coords) {
