@@ -86,7 +86,7 @@ const Search = () => {
         const newMarkers = createMarkers(data);
         setMarkers(newMarkers);
         sessionStorage.setItem("lpf_searchData", JSON.stringify(newMarkers));
-        sessionStorage.setItem("lpf_searchDept", data.department);
+        sessionStorage.setItem("lpf_searchDept", selectedDepartment);
         console.log(
           "stocké dans sessionStorage : ",
           sessionStorage.getItem("lpf_searchData"),
@@ -103,8 +103,14 @@ const Search = () => {
     if (sessionStorage.getItem("lpf_searchData")) {
       const data = JSON.parse(sessionStorage.getItem("lpf_searchData"));
       const dept = sessionStorage.getItem("lpf_searchDept");
-      console.log("récupéré de sessionStorage : ", data, dept);
       setMarkers(data);
+      setSelectedDepartment(dept);
+      const chosenDepartment = departments.find(
+        (department) => department.code === dept
+      );
+      if (chosenDepartment) {
+        setMapLocation(chosenDepartment.coords);
+      }
     }
   }, []);
 
