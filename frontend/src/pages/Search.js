@@ -85,12 +85,28 @@ const Search = () => {
         console.log("sites trouvés :", data);
         const newMarkers = createMarkers(data);
         setMarkers(newMarkers);
+        sessionStorage.setItem("lpf_searchData", JSON.stringify(newMarkers));
+        sessionStorage.setItem("lpf_searchDept", data.department);
+        console.log(
+          "stocké dans sessionStorage : ",
+          sessionStorage.getItem("lpf_searchData"),
+          sessionStorage.getItem("lpf_searchDept")
+        );
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des sites :", error);
         // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
       });
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("lpf_searchData")) {
+      const data = JSON.parse(sessionStorage.getItem("lpf_searchData"));
+      const dept = sessionStorage.getItem("lpf_searchDept");
+      console.log("récupéré de sessionStorage : ", data, dept);
+      setMarkers(data);
+    }
+  }, []);
 
   useEffect(() => {
     setMapKey(Date.now());
@@ -142,15 +158,16 @@ const Search = () => {
           attribution='&copy; <a href="https://www.openstreemap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {markers.map((marker, index) => {
-          return (
-            <Marker key={index} position={marker.geocode} icon={monumentIcon}>
-              <Popup>
-                <Link to={`/sites/${marker.id}`}>{marker.popUp}</Link>
-              </Popup>
-            </Marker>
-          );
-        })}
+        {markers &&
+          markers.map((marker, index) => {
+            return (
+              <Marker key={index} position={marker.geocode} icon={monumentIcon}>
+                <Popup>
+                  <Link to={`/sites/${marker.id}`}>{marker.popUp}</Link>
+                </Popup>
+              </Marker>
+            );
+          })}
         {currentLocation !== [0, 0] && (
           <Marker
             key={1}
