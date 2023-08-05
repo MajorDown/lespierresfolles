@@ -8,14 +8,16 @@ import Connexion from "../pages/Connexion";
 
 const Router = () => {
   return (
-    <Routes>
-      <Route exact path={"/"} Component={Accueil} />
-      <Route exact path={"/search"} Component={Search} />
-      <Route path="/sites/:id" Component={Site} />
-      <Route path="/create" Component={Create} />
-      <Route path="/connection" Component={Connexion} />
-      <Route path="*" Component={Accueil} />
-    </Routes>
+    <main>
+      <Routes>
+        <Route exact path={"/"} Component={Accueil} />
+        <Route exact path={"/search"} Component={Search} />
+        <Route path="/sites/:id" Component={Site} />
+        <Route path="/create" Component={Create} />
+        <Route path="/connection" Component={Connexion} />
+        <Route path="*" Component={Accueil} />
+      </Routes>
+    </main>
   );
 };
 

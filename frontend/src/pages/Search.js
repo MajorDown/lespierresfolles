@@ -119,9 +119,9 @@ const Search = () => {
   }, [mapLocation]);
 
   return (
-    <section>
+    <section id="searchSection">
       <h2>Recherchez des Mégalithes</h2>
-      <div id="searchSection">
+      <div id="searchSectionContent">
         <form id="searchForm" onSubmit={(e) => handleSubmit(e)}>
           <label htmlFor="departmentNumber">Choisissez le département :</label>
           <br />

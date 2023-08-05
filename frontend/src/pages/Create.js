@@ -291,13 +291,13 @@ const Create = () => {
         </select>
         <br />
         <label htmlFor="input-description">
-          Ajoutez une description (max 100 caractères) :
+          Ajoutez une description (max 150 caractères) :
         </label>
         <br />
         <textarea
           id="input-description"
-          rows="3"
-          maxLength="100"
+          rows="4"
+          maxLength="150"
           placeholder="Entrez votre description ici..."
           onChange={(event) => handleDescriptionChange(event)}
           value={description}
