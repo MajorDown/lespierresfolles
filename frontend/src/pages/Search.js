@@ -154,7 +154,7 @@ const Search = () => {
           </div>
         </form>
         <p>Besoin de retrouver votre position ?</p>
-        <button type="button" onClick={getLocation}>
+        <button id="geolocation" type="button" onClick={getLocation}>
           Autoriser la géolocalisation
         </button>
       </div>

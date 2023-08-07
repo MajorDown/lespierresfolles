@@ -28,3 +28,21 @@ h2 {
     font-size: 3vw;
     line-height: 4vw;
 }
+
+select,
+input {
+    font-size: 2vw;
+}
+
+/**********SEARCH********************/
+
+.btn-search {
+    display: flex;
+    justify-content: center;
+}
+
+#searchSectionContent {
+    display: block;
+}
+
+/*********CREATE*********************/

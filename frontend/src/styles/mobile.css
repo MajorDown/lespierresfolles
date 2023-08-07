@@ -283,6 +283,22 @@ h2 {
     gap: 1vw;
 }
 
+#createSection div {
+    width: 100%;
+}
+
+#input-name,
+#input-department,
+#input-city,
+#input-type,
+#input-description {
+    width: 100%;
+}
+
+#input-department {
+    width: 100%;
+}
+
 #input-description {
     border-radius: 2vw;
     border: var(--color4) 0.5vw solid;
@@ -290,7 +306,6 @@ h2 {
     padding: 0.5vw;
     background: var(--color3);
     color: var(--color4);
-    width: 97vw;
 }
 
 #createSection select {
@@ -302,10 +317,6 @@ h2 {
     color: var(--color4);
 }
 
-#input-city {
-    max-width: 50vw;
-}
-
 #createSection .input-container {
     position: relative;
 }
@@ -314,6 +325,25 @@ h2 {
     position: absolute;
     top: 17vw;
     left: 20vw;
+}
+
+div.photoPreview {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 17vw;
+    height: 17vw;
+    background: var(--color2);
+    border-radius: 2vw;
+    border: solid 1px var(--color3);
+    overflow: hidden;
+}
+
+
+.photoPreview img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #createSection input:not([type="file"]) {
@@ -354,24 +384,6 @@ h2 {
     padding: 1vw;
 }
 
-.photoPreview {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 17vw;
-    height: 17vw;
-    background: var(--color2);
-    border-radius: 2vw;
-    border: solid 1px var(--color3);
-    overflow: hidden;
-}
-
-
-.photoPreview img {
-    max-width: 100%;
-    max-height: 100%;
-}
 
 #mapForm {
     display: flex;

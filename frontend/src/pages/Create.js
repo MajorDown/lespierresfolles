@@ -227,87 +227,94 @@ const Create = () => {
     <section id="createSection">
       <h2>Ajouter un Mégalithe</h2>
       <form action="POST">
-        <label htmlFor="input-name">
-          Nom / lieu-dit du site<span>*</span> :
-        </label>
-        <br />
-        <input
-          required
-          id="input-name"
-          type="text"
-          value={siteName}
-          onChange={handleSiteNameChange}
-        />
-        <br />
-        <label htmlFor="input-department">
-          Département<span>*</span> :
-        </label>
-        <br />
-        <select
-          id="input-department"
-          required
-          value={selectedDepartment}
-          onChange={handleDepartmentChange}
-        >
-          {departments.map((department) => (
-            <option key={department.code} value={department.code}>
-              {department.name} ({department.code})
-            </option>
-          ))}
-        </select>
-        <br />
-        <label htmlFor="input-city">
-          Commune<span>*</span> :
-        </label>
-        <br />
-        <select
-          id="input-city"
-          value={selectedCity}
-          onChange={(event) => handleCityChange(event)}
-        >
-          <option value="">Sélectionner une ville</option>
-          {filteredCities.map((city) => (
-            <option key={city.commune} value={city.commune}>
-              {city.commune} ({city.cp})
-            </option>
-          ))}
-        </select>
-        <br />
-        <label htmlFor="input-type">
-          Type du monument<span>*</span> :
-        </label>
-        <br />
-        <select
-          id="input-type"
-          required
-          value={selectedMonumentType}
-          onChange={handleMonumentTypeChange}
-        >
-          {monumentTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
-        <br />
-        <label htmlFor="input-description">
-          Ajoutez une description (max 150 caractères) :
-        </label>
-        <br />
-        <textarea
-          id="input-description"
-          rows="4"
-          maxLength="150"
-          placeholder="Entrez votre description ici..."
-          onChange={(event) => handleDescriptionChange(event)}
-          value={description}
-        ></textarea>
-        <br />
+        <div>
+          <label htmlFor="input-name">
+            Nom / lieu-dit du site<span>*</span> :
+          </label>
+          <input
+            required
+            id="input-name"
+            type="text"
+            value={siteName}
+            onChange={handleSiteNameChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="input-department">
+            Département<span>*</span> :
+          </label>
+
+          <select
+            id="input-department"
+            required
+            value={selectedDepartment}
+            onChange={handleDepartmentChange}
+          >
+            {departments.map((department) => (
+              <option key={department.code} value={department.code}>
+                {department.name} ({department.code})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="input-city">
+            Commune<span>*</span> :
+          </label>
+
+          <select
+            id="input-city"
+            value={selectedCity}
+            onChange={(event) => handleCityChange(event)}
+          >
+            <option value="">Sélectionner une ville</option>
+            {filteredCities.map((city) => (
+              <option key={city.commune} value={city.commune}>
+                {city.commune} ({city.cp})
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="input-type">
+            Type du monument<span>*</span> :
+          </label>
+
+          <select
+            id="input-type"
+            required
+            value={selectedMonumentType}
+            onChange={handleMonumentTypeChange}
+          >
+            {monumentTypes.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="input-description">
+            Ajoutez une description (max 150 caractères) :
+          </label>
+
+          <textarea
+            id="input-description"
+            rows="4"
+            maxLength="150"
+            placeholder="Entrez votre description ici..."
+            onChange={(event) => handleDescriptionChange(event)}
+            value={description}
+          ></textarea>
+        </div>
+
         <div className="input-container">
           <label htmlFor="input-file1">
             Ajouter une première photo<span>*</span> :
           </label>
-          <br />
+
           <input
             required
             id="input-file1"
@@ -327,12 +334,12 @@ const Create = () => {
             </button>
           )}
         </div>
-        <br />
+
         <div className="input-container">
           {photos[0] && (
             <>
               <label htmlFor="input-file2">Ajouter une deuxième photo :</label>
-              <br />
+
               <input
                 id="input-file2"
                 type="file"
@@ -357,7 +364,7 @@ const Create = () => {
           {photos[1] && (
             <>
               <label htmlFor="input-file3">Ajouter une troisième photo :</label>
-              <br />
+
               <input
                 id="input-file3"
                 type="file"
@@ -375,7 +382,6 @@ const Create = () => {
                   <SvgMaker item="trash" />
                 </button>
               )}
-              <br />
             </>
           )}
         </div>
@@ -383,7 +389,7 @@ const Create = () => {
           {photos[2] && (
             <>
               <label htmlFor="input-file4">Ajouter une quatrième photo :</label>
-              <br />
+
               <input
                 id="input-file4"
                 type="file"
@@ -401,7 +407,6 @@ const Create = () => {
                   <SvgMaker item="trash" />
                 </button>
               )}
-              <br />
             </>
           )}
         </div>
@@ -409,7 +414,7 @@ const Create = () => {
           {photos[3] && (
             <>
               <label htmlFor="input-file5">Ajouter une cinquième photo :</label>
-              <br />
+
               <input
                 id="input-file5"
                 type="file"
@@ -427,73 +432,86 @@ const Create = () => {
                   <SvgMaker item="trash" />
                 </button>
               )}
-              <br />
             </>
           )}
         </div>
-        <br />
-        <label htmlFor="input-state">
-          Décrivez l'état de conservation du site :
-        </label>
-        <br />
-        <select
-          id="input-state"
-          value={selectedState}
-          onChange={handleStateChange}
-        >
-          {states.map((state) => (
-            <option key={state} value={state}>
-              {state}
-            </option>
-          ))}
-        </select>
-        <br />
-        <label htmlFor="input-access">Accessible au public : </label>
-        <input
-          id="input-access"
-          type="checkbox"
-          checked={publicAccess}
-          onChange={handlePublicAccessChange}
-        />{" "}
-        Oui
-        <br />
-        <label htmlFor="input-material">Matériau utilisé :</label>
-        <br />
-        <select
-          id="input-material"
-          value={selectedMaterial}
-          onChange={handleMaterialChange}
-        >
-          {materials.map((material) => (
-            <option key={material} value={material}>
-              {material}
-            </option>
-          ))}
-        </select>
-        <br />
-        <label htmlFor="input-size">Hauteur approximative :</label>
-        <input
-          id="input-size"
-          type="number"
-          value={size !== null ? size : ""}
-          min="0"
-          onChange={handleSizeChange}
-        />{" "}
-        mètres
-        <br />
-        <label htmlFor="input-weight">Poids approximatif :</label>
-        <input
-          id="input-weight"
-          type="number"
-          step="any"
-          value={weight !== null ? weight : ""}
-          min="0"
-          onChange={handleWeightChange}
-        />{" "}
-        tonnes
-        <br />
+
+        <div>
+          <label id="label-state" htmlFor="input-state">
+            Décrivez l'état de conservation du site :
+          </label>
+
+          <select
+            id="input-state"
+            value={selectedState}
+            onChange={handleStateChange}
+          >
+            {states.map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="input-access">Accessible au public : </label>
+          <input
+            id="input-access"
+            type="checkbox"
+            checked={publicAccess}
+            onChange={handlePublicAccessChange}
+          />{" "}
+          Oui
+        </div>
+
+        <div>
+          <label id="label-material" htmlFor="input-material">
+            Matériau utilisé :
+          </label>
+
+          <select
+            id="input-material"
+            value={selectedMaterial}
+            onChange={handleMaterialChange}
+          >
+            {materials.map((material) => (
+              <option key={material} value={material}>
+                {material}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="input-size">Hauteur approximative :</label>
+          <input
+            id="input-size"
+            type="number"
+            value={size !== null ? size : ""}
+            min="0"
+            onChange={handleSizeChange}
+          />{" "}
+          mètres
+        </div>
+
+        <div>
+          <label htmlFor="input-weight">Poids approximatif :</label>
+          <input
+            id="input-weight"
+            type="number"
+            step="any"
+            value={weight !== null ? weight : ""}
+            min="0"
+            onChange={handleWeightChange}
+          />{" "}
+          tonnes
+        </div>
+
         <div id="mapForm">
-          Positionnez le site sur la carte. Attention à la précision !<br />
+          <p>
+            Positionnez le site sur la carte. <br /> Attention à la précision !
+          </p>
           <button onClick={(e) => handleGeolocation(e)}>
             Utiliser votre position
           </button>
