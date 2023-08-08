@@ -233,6 +233,7 @@ const Create = () => {
 
           navigate(`/sites/${response.site._id}`);
         } else {
+          setisSending(false);
           console.error("Erreur lors de la création du site :", xhr.statusText);
           // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
         }
@@ -250,7 +251,7 @@ const Create = () => {
   return (
     <section id="createSection">
       <h2>Ajouter un Mégalithe</h2>
-      <form action="POST">
+      <form action="POST" onSubmit={(event) => handleSubmit(event)}>
         <div className="input-container">
           <label htmlFor="input-name">
             Nom / lieu-dit du site<span>*</span> :
@@ -567,9 +568,7 @@ const Create = () => {
             <Popup>{siteName !== "" ? siteName : "nouveau site"}</Popup>
           </Marker>
         </MapContainer>
-        <button onClick={(event) => handleSubmit(event)}>
-          Valider la création du nouveau site
-        </button>
+        <button type="submit">Valider la création du nouveau site</button>
         {isSending && <ProgressBar progressValue={uploadProgress} />}
       </form>
       <p id="ps">
