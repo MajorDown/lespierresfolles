@@ -46,3 +46,7 @@ input {
 }
 
 /*********CREATE*********************/
+
+#createSection .btn-trash {
+    top: 10vw;
+}

@@ -10,6 +10,7 @@ import monumentTypes from "../monumentTypes.json";
 import materials from "../materials.json";
 import states from "../states.json";
 import SvgMaker from "../components/SvgMaker";
+import ProgressBar from "../components/ProgressBar";
 const BACKEND_URL = "http://51.77.159.211:11007";
 
 const Create = () => {
@@ -31,6 +32,8 @@ const Create = () => {
   const [megalithMarkerPosition, setMegalithMarkerPosition] = useState([
     48.8566, 2.3522,
   ]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isSending, setisSending] = useState(false);
 
   useEffect(() => {
     setMapKey(Date.now());
@@ -165,9 +168,21 @@ const Create = () => {
     );
   };
 
+  const handleProgress = (event) => {
+    if (event.lengthComputable) {
+      const percentComplete = (event.loaded / event.total) * 100;
+      setUploadProgress(percentComplete);
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (window.confirm("Êtes-vous sûr de vouloir soumettre le formulaire ?")) {
+    if (
+      window.confirm(
+        "Vous êtes sur le point de répertorier un nouveau site mégalithique. Avez-vous bien verifié l'exactitude des informations rentrées ?"
+      )
+    ) {
+      setisSending(true);
       const currentDate = new Date();
       const day = currentDate.getDate().toString().padStart(2, "0");
       const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
@@ -199,26 +214,35 @@ const Create = () => {
       formData.append("lon", megalithMarkerPosition[1]);
       formData.append("date", formattedDate);
       formData.append("userId", localStorage.userId);
-
       console.log(formData);
 
-      fetch(`${BACKEND_URL}/api/sites/`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("lpf_token")}`,
-        },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("site créé !", data);
-          navigate(`/sites/${data.site._id}`);
-          // Faites quelque chose avec la réponse du serveur, par exemple, redirigez l'utilisateur vers une autre page
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la création du site :", error);
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${BACKEND_URL}/api/sites/`, true);
+      xhr.setRequestHeader(
+        "Authorization",
+        `Bearer ${localStorage.getItem("lpf_token")}`
+      );
+      xhr.upload.addEventListener("progress", (event) => {
+        handleProgress(event); // Appel correct de handleProgress avec l'objet event
+      });
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          setisSending(false);
+          const response = JSON.parse(xhr.responseText);
+          console.log("Site créé :", response.site);
+
+          navigate(`/sites/${response.site._id}`);
+        } else {
+          console.error("Erreur lors de la création du site :", xhr.statusText);
           // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
-        });
+        }
+      };
+      xhr.onerror = () => {
+        setisSending(false);
+        console.error("Erreur réseau lors de la création du site.");
+        // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
+      };
+      xhr.send(formData);
     }
   };
 
@@ -227,7 +251,7 @@ const Create = () => {
     <section id="createSection">
       <h2>Ajouter un Mégalithe</h2>
       <form action="POST">
-        <div>
+        <div className="input-container">
           <label htmlFor="input-name">
             Nom / lieu-dit du site<span>*</span> :
           </label>
@@ -239,11 +263,10 @@ const Create = () => {
             onChange={handleSiteNameChange}
           />
         </div>
-        <div>
+        <div className="input-container">
           <label htmlFor="input-department">
             Département<span>*</span> :
           </label>
-
           <select
             id="input-department"
             required
@@ -257,12 +280,10 @@ const Create = () => {
             ))}
           </select>
         </div>
-
-        <div>
+        <div className="input-container">
           <label htmlFor="input-city">
             Commune<span>*</span> :
           </label>
-
           <select
             id="input-city"
             value={selectedCity}
@@ -276,11 +297,10 @@ const Create = () => {
             ))}
           </select>
         </div>
-        <div>
+        <div className="input-container">
           <label htmlFor="input-type">
             Type du monument<span>*</span> :
           </label>
-
           <select
             id="input-type"
             required
@@ -294,12 +314,10 @@ const Create = () => {
             ))}
           </select>
         </div>
-
-        <div>
+        <div className="input-container">
           <label htmlFor="input-description">
             Ajoutez une description (max 150 caractères) :
           </label>
-
           <textarea
             id="input-description"
             rows="4"
@@ -309,12 +327,10 @@ const Create = () => {
             value={description}
           ></textarea>
         </div>
-
         <div className="input-container">
           <label htmlFor="input-file1">
             Ajouter une première photo<span>*</span> :
           </label>
-
           <input
             required
             id="input-file1"
@@ -334,7 +350,6 @@ const Create = () => {
             </button>
           )}
         </div>
-
         <div className="input-container">
           {photos[0] && (
             <>
@@ -435,12 +450,10 @@ const Create = () => {
             </>
           )}
         </div>
-
-        <div>
+        <div className="input-container">
           <label id="label-state" htmlFor="input-state">
             Décrivez l'état de conservation du site :
           </label>
-
           <select
             id="input-state"
             value={selectedState}
@@ -453,8 +466,7 @@ const Create = () => {
             ))}
           </select>
         </div>
-
-        <div>
+        <div className="input-container">
           <label htmlFor="input-access">Accessible au public : </label>
           <input
             id="input-access"
@@ -464,12 +476,10 @@ const Create = () => {
           />{" "}
           Oui
         </div>
-
-        <div>
+        <div className="input-container">
           <label id="label-material" htmlFor="input-material">
             Matériau utilisé :
           </label>
-
           <select
             id="input-material"
             value={selectedMaterial}
@@ -482,8 +492,7 @@ const Create = () => {
             ))}
           </select>
         </div>
-
-        <div>
+        <div className="input-container">
           <label htmlFor="input-size">Hauteur approximative :</label>
           <input
             id="input-size"
@@ -494,8 +503,7 @@ const Create = () => {
           />{" "}
           mètres
         </div>
-
-        <div>
+        <div className="input-container">
           <label htmlFor="input-weight">Poids approximatif :</label>
           <input
             id="input-weight"
@@ -562,10 +570,11 @@ const Create = () => {
         <button onClick={(event) => handleSubmit(event)}>
           Valider la création du nouveau site
         </button>
-        <p>
-          <span>*</span>champs obligatoire
-        </p>
+        {isSending && <ProgressBar progressValue={uploadProgress} />}
       </form>
+      <p id="ps">
+        <span>*</span>champs obligatoire
+      </p>
     </section>
   );
 };
