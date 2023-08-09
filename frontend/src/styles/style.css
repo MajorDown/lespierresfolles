@@ -20,6 +20,17 @@ font-family: 'Mynerve', cursive; */
     padding: 0px;
 }
 
+/*ANIMATIONS*/
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 /*IMPORT CSS MOBILE FIRST*/
 @import url('mobile.css');
 @import url('tablet.css') screen and (min-width: 768px);

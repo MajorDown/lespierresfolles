@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const ProgressBar = ({ progressValue }) => {
-  const progressBarWidth = {
+  const [isToLong, setIsToLong] = useState(false);
+
+  const style = {
     width: `${progressValue}%`,
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsToLong(true);
+    }, 10000);
+  }, []);
+
   return (
     <div className="progressBar">
-      <div className="progressBar-value" style={progressBarWidth}>
-        <p>Création du site en cour...</p>
+      <p>Création du site en cour... {progressValue.toFixed(1)}%</p>
+      <div className="progressBar-value" style={style}>
+        .
       </div>
+      {isToLong && (
+        <div className="progressBar-timeAdvertiser">
+          <p>le réseau semble anormalement lent... </p>
+          <p>Veuillez patienter</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -90,7 +90,7 @@ const Create = () => {
   };
 
   const handleDescriptionChange = (event) => {
-    setDescription(event.target.value.slice(0, 100));
+    setDescription(event.target.value.slice(0, 200));
   };
 
   const handleSiteNameChange = (event) => {
@@ -317,12 +317,12 @@ const Create = () => {
         </div>
         <div className="input-container">
           <label htmlFor="input-description">
-            Ajoutez une description (max 150 caractères) :
+            Ajoutez une description (max 200 caractères) :
           </label>
           <textarea
             id="input-description"
             rows="4"
-            maxLength="150"
+            maxLength="200"
             placeholder="Entrez votre description ici..."
             onChange={(event) => handleDescriptionChange(event)}
             value={description}

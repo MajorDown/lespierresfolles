@@ -340,7 +340,6 @@ div.photoPreview {
     overflow: hidden;
 }
 
-
 .photoPreview img {
     max-width: 100%;
     max-height: 100%;
@@ -409,19 +408,31 @@ div.photoPreview {
 }
 
 .progressBar {
-    width: 100%;
-    height: 5vw;
-    border: solid 0.5vw var(--color3);
-    border-radius: 2vw;
-    position: relative;
+    width: 90vw;
+    border-radius: 1vw;
 }
 
 .progressBar p {
-    padding-top: 1vw;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 3vw;
+    text-align: center;
+}
+
+.progressBar-value {
+    background-color: var(--color3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color3);
+}
+
+.progressBar-timeAdvertiser {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.progressBar-timeAdvertiser p {
+    text-align: center;
 }
 
 #ps {
