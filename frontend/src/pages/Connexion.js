@@ -3,7 +3,7 @@ const API_URL = "http://51.77.159.211:11007";
 
 const Connexion = () => {
   // STATES
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [userId, setUserId] = useState(localStorage.getItem("lpf_userId"));
   const [loginErrorMessage, setLoginErrorMessage] = useState("");
   const [signinErrorMessage, setSigninErrorMessage] = useState("");
   const [nextMdpErrorMessage, setNextMdpErrorMessage] = useState("");
@@ -43,7 +43,7 @@ const Connexion = () => {
       .then((data) => {
         const { userId, token } = data;
         setUserId(userId);
-        localStorage.setItem("userId", userId);
+        localStorage.setItem("lpf_userId", userId);
         localStorage.setItem("lpf_token", token);
         window.location.reload();
       })
@@ -55,7 +55,7 @@ const Connexion = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("lpf-token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("lpf_userId");
     setUserId(null);
     window.location.reload();
   };

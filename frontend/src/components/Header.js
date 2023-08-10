@@ -5,8 +5,8 @@ const Header = () => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    setUser(localStorage.getItem("userId"));
-  }, [localStorage.getItem("userId")]);
+    setUser(localStorage.getItem("lpf_userId"));
+  }, [localStorage.getItem("lpf_userId")]);
 
   return (
     <header>

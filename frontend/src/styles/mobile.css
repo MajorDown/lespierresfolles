@@ -274,6 +274,10 @@ h2 {
 
 /**********CREATE**************************/
 
+#createSection {
+    min-height: 90vh;
+}
+
 #createSection form {
     margin: 2vw;
     display: flex;
@@ -438,6 +442,22 @@ div.photoPreview {
 #ps {
     width: 100%;
     text-align: center;
+}
+
+.ifNotConnected {
+    padding-top: 5vw;
+    text-align: center;
+}
+
+.linkToConnect {
+    margin: 5vw auto;
+    width: fit-content;
+}
+
+.linkToConnect a {
+    padding: 1vw 1vw;
+    color: var(--color4);
+    text-decoration: none;
 }
 
 /**********CONNEXION*******************/
