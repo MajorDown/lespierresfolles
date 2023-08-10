@@ -34,6 +34,8 @@ const Create = () => {
   ]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isSending, setisSending] = useState(false);
+  const [hadError, setHadError] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     setMapKey(Date.now());
@@ -175,6 +177,15 @@ const Create = () => {
     }
   };
 
+  const handleErrorMessage = (message) => {
+    setHadError(true);
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage("");
+      setHadError(false);
+    }, 15000);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (
@@ -235,12 +246,18 @@ const Create = () => {
         } else {
           setisSending(false);
           console.error("Erreur lors de la création du site :", xhr.statusText);
+          handleErrorMessage(
+            "La création du site à échoué. Veuillez vous reconnecter"
+          );
           // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
         }
       };
       xhr.onerror = () => {
         setisSending(false);
         console.error("Erreur réseau lors de la création du site.");
+        handleErrorMessage(
+          "La création du site à échoué, veuillez recommencer plus tard. Pensez à sauvegarder les photos du site ;-)"
+        );
         // Traitez l'erreur, affichez un message d'erreur à l'utilisateur, etc.
       };
       xhr.send(formData);
@@ -571,6 +588,7 @@ const Create = () => {
         <button type="submit">Valider la création du nouveau site</button>
         {isSending && <ProgressBar progressValue={uploadProgress} />}
       </form>
+      {hadError && <p>{ErrorMessage}</p>}
       <p id="ps">
         <span>*</span>champs obligatoire
       </p>
