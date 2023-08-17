@@ -1,8 +1,76 @@
 body {
     max-width: 1440px;
+    margin: auto;
     background: url(/public/images/background.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+}
+
+svg {
+    width: 3vw;
+    height: 3vw;
+}
+
+#welcomer {
+    font-size: 1vw;
+}
+
+section {
+    font-size: 1vw;
+}
+
+h2 {
+    font-size: 2vw;
+    line-height: 3vw;
+}
+
+select,
+input {
+    font-size: 1vw;
+}
+
+input:hover,
+button:hover,
+select:hover {
+    cursor: pointer;
+}
+
+/**********SEARCH**********/
+
+#searchSection select,
+#searchSection button {
+    padding: 0.5vw;
+    margin: 0.5vw 0;
+    border: 3px solid var(--color4);
+}
+
+.leaflet-container {
+    height: 800px;
+}
+
+/**********CREATE***************************/
+
+#createSection select,
+#createSection button,
+#createSection textarea,
+#createSection input:not([type="file"]) {
+    padding: 0.5vw;
+    margin: 0.5vw 0;
+    border: 3px solid var(--color4);
+}
+
+div.photoPreview {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 20px;
+}
+
+#mapForm {
+    margin: 0 auto;
+}
+
+#createSection .leaflet-container {
+    height: 800px;
 }

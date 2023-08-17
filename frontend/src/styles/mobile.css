@@ -513,10 +513,34 @@ div.photoPreview {
     color: var(--color4);
 }
 
+/**********CHARTE******************/
+
+.shartContainer {
+    margin: 2vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.shartContainer p,
+.shartContainer ul,
+.shartContainer h3 {
+    padding: 0.5vw;
+}
+
+.shartContainer ul li {
+    list-style: none;
+}
+
 /**********FOOTER******************/
 
 footer {
     margin: 4vw auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+
+footer a {
+    color: var(--color4);
 }

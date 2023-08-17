@@ -5,6 +5,7 @@ import Site from "../pages/Site";
 import Search from "../pages/Search";
 import Create from "../pages/Create";
 import Connexion from "../pages/Connexion";
+import Sharts from "../pages/Sharts";
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
         <Route path="/sites/:id" Component={Site} />
         <Route path="/create" Component={Create} />
         <Route path="/connection" Component={Connexion} />
+        <Route path="/charte" Component={Sharts} />
         <Route path="*" Component={Accueil} />
       </Routes>
     </main>
