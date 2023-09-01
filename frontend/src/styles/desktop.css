@@ -8,6 +8,13 @@ body {
     background-size: cover;
 }
 
+p,
+label,
+select,
+input {
+    font-size: 1.5vw;
+}
+
 svg {
     width: 3vw;
     height: 3vw;
@@ -24,11 +31,6 @@ section {
 h2 {
     font-size: 2vw;
     line-height: 3vw;
-}
-
-select,
-input {
-    font-size: 1vw;
 }
 
 input:hover,

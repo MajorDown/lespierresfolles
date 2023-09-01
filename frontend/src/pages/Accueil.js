@@ -1,21 +1,47 @@
 import React from "react";
-import Carousel from "../components/Carousel";
 
 const Accueil = () => {
   return (
-    <section id="accueil">
+    <section id="accueilSection">
       <h2>Le site de référencement des mégalithes de France</h2>
-      <p>les derniers ajouts :</p>
-      <Carousel
-        time="10000"
-        album={[
-          "/images/menhir1.jpg",
-          "/images/menhir2.jpg",
-          "/images/menhir3.jpg",
-          "/images/menhir4.jpg",
-          "/images/menhir5.jpg",
-        ]}
-      />
+      <article id="album">
+        <img
+          id="album1"
+          src="/images/dolmen_de_la_madeleine.jpg"
+          alt="dolmen de la Madeleine"
+        />
+        <img
+          id="album2"
+          src="/images/menhir_de_la_rainière.jpg"
+          alt="menhir de la Rainière"
+        />
+        <img
+          id="album3"
+          src="/images/dolmen_de_thiré.jpg"
+          alt="dolmen de Thiré"
+        />
+        <img
+          id="album4"
+          src="/images/menhir_du_camp_de_césar.jpg"
+          alt="menhir du camp de César"
+        />
+        <img
+          id="album5"
+          src="/images/menhirs_des_pierres_folles_du_follet.jpg"
+          alt="menhirs des Pierres Folles du Follet"
+        />
+        <img
+          id="album6"
+          src="/images/tumulus_de_la_sulette.jpg"
+          alt="tumulus de la Sulette"
+        />
+        <img
+          id="album7"
+          src="/images/dolmen_des_landes.jpg"
+          alt="dolmen des Landes"
+        />
+      </article>
+
       <p>
         Que vous souhaitiez silloner les routes à la découvertes des menhirs,
         dolmens et autre tumulus éparpillés sur notre belle contrée, ou que vous
@@ -28,7 +54,7 @@ const Accueil = () => {
         une authentification est recquise.
       </p>
       <p>
-        Créé par des passionnés de gros cailoux, cette application gratuite à
+        Créé par des passionnés de gros cailloux, cette application gratuite à
         pour but de favoriser l'étude des mégalithes, leurs fonctions et leur
         sercrets.
       </p>

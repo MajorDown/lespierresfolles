@@ -178,49 +178,67 @@ h2 {
 
 /**********ACCUEIL********************/
 
-.carousel {
-    margin: 4vw 0 4vw 0;
+#album {
     position: relative;
-    width: 95vw;
-    height: 95vw;
-    display: flex;
-    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    height: 50vw;
+    max-width: 1258px;
+    max-height: 745px;
 }
 
-#carouselItem {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 2vw;
-}
-
-.carousel svg {
-    fill: var(--color4);
-    z-index: 2;
-    width: 10vw;
-    height: 10vw;
-}
-
-.carousel .arrow-left {
+#album img {
+    width: 26vw;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 2vw;
+    border: var(--color3) 0.1vw solid;
+    border-radius: 1vw;
+    max-width: 388px;
 }
 
-.carousel .arrow-right {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 2vw;
-}
-
-#item-name {
-    position: absolute;
-    bottom: 0;
-}
-
-#accueil p {
+#accueilSection p {
     margin: 2vw;
+}
+
+#album1 {
+    top: 0%;
+    left: 0%;
+    transform: rotate(1deg);
+}
+
+#album2 {
+    top: 1%;
+    left: 62%;
+    transform: rotate(-2deg);
+}
+
+#album3 {
+    top: 30%;
+    left: 1%;
+    transform: rotate(-2deg);
+}
+
+#album4 {
+    top: 1%;
+    left: 31%;
+    transform: rotate(1deg);
+}
+
+#album5 {
+    top: 30%;
+    left: 63%;
+    transform: rotate(2deg);
+}
+
+#album6 {
+    top: 65%;
+    left: 0.5%;
+    transform: rotate(-2deg);
+}
+
+#album7 {
+    top: 60%;
+    left: 61%;
+    transform: rotate(-1deg);
 }
 
 /**********SEARCH********************/
