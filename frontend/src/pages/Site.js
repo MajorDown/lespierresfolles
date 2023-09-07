@@ -9,6 +9,37 @@ const Site = () => {
   const [selectedImage, setSelectedImage] = useState(
     siteData?.images?.url1 || ""
   );
+  const [isConnected, setIsConnected] = useState(false);
+  const [post, setPost] = useState("");
+
+  const handlePostSubmit = (e) => {
+    e.preventDefault();
+    // Envoi du contenu du commentaire au backend
+    fetch(`${BACKEND_URL}/api/sites/${id}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        siteId: id,
+        userId: localStorage.getItem("lpf_userId"),
+        post: post,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erreur d'enregistrement du commentaire");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Actualisation de la liste des commentaires
+        setSiteData(data.site);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/api/sites/${id}`)
@@ -31,6 +62,10 @@ const Site = () => {
   const handlePreviewerClick = (imageURL) => {
     setSelectedImage(imageURL);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("lpf_userId")) setIsConnected(true);
+  }, [isConnected]);
 
   return (
     <section>
@@ -127,6 +162,24 @@ const Site = () => {
                 <p>Posté par Alex :</p>
                 <p>"ouai mon chat c'est super méga vrai d'abooooord"</p>
               </article>
+              {isConnected && (
+                <form id="postWriting" onSubmit={(e) => handlePostSubmit(e)}>
+                  <label htmlFor="postWriter">
+                    Envie d'apporter votre commentaire ? (max 200 caractères) :
+                  </label>
+                  <textarea
+                    name="post"
+                    id="postWriter"
+                    cols="80"
+                    rows="4"
+                    maxLength="200"
+                    placeholder="Entrez votre commentaire ici..."
+                    value={post}
+                    onChange={(e) => setPost(e.target.value)}
+                  ></textarea>
+                  <button type="submit">Ajouter le commentaire</button>
+                </form>
+              )}
             </Accordion>
           </div>
         </>
