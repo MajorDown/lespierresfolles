@@ -15,7 +15,7 @@ const Site = () => {
   const handlePostSubmit = (e) => {
     e.preventDefault();
     // Envoi du contenu du commentaire au backend
-    fetch(`${BACKEND_URL}/api/sites/${id}/comments`, {
+    fetch(`${BACKEND_URL}/api/sites/${id}/post`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,7 +149,7 @@ const Site = () => {
               <p className="type">
                 Accès publique : {siteData.publicAccess ? "oui" : "non"}
               </p>
-              <p className="type">Hauteur : {siteData.size}m</p>
+              <p className="type">Hauteur : ~ {siteData.size}m</p>
               <p className="type">Masse : ~ {siteData.weigth}t</p>
               <p className="type">Matériau : {siteData.material}</p>
             </Accordion>

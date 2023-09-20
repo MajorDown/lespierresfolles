@@ -8,6 +8,10 @@ body {
     background-size: cover;
 }
 
+section {
+    background-color: rgba(129, 123, 123, 0.646);
+}
+
 p,
 label,
 select,
@@ -16,8 +20,8 @@ input {
 }
 
 svg {
-    width: 3vw;
-    height: 3vw;
+    width: 4vw;
+    height: 4vw;
 }
 
 #welcomer {
