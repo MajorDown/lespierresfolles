@@ -10,6 +10,7 @@ body {
 
 section {
     background-color: rgba(129, 123, 123, 0.646);
+    border-radius: 3vw;
 }
 
 p,
@@ -79,6 +80,10 @@ div.photoPreview {
 
 #createSection .leaflet-container {
     height: 800px;
+}
+
+.leaflet-control-attribution {
+    display: none;
 }
 
 /**********ACCUEIL**********************/

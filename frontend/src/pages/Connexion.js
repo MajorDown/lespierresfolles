@@ -172,7 +172,7 @@ const Connexion = () => {
             <label htmlFor="mdp">Votre mot de passe :</label>
             <input
               required
-              type="text"
+              type="password"
               name="mdp"
               id="mdp"
               value={mdpInput}
