@@ -14,11 +14,16 @@ const Site = () => {
 
   const handlePostSubmit = (e) => {
     e.preventDefault();
-    // Envoi du contenu du commentaire au backend
+    const token = localStorage.getItem("lpf_token");
+    if (!token) {
+      console.error("Le token JWT est manquant.");
+      return;
+    }
     fetch(`${BACKEND_URL}/api/sites/${id}/post`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         siteId: id,
@@ -35,6 +40,7 @@ const Site = () => {
       .then((data) => {
         // Actualisation de la liste des commentaires
         setSiteData(data.site);
+        setPost("");
       })
       .catch((error) => {
         console.log(error);
@@ -154,14 +160,14 @@ const Site = () => {
               <p className="type">Matériau : {siteData.material}</p>
             </Accordion>
             <Accordion name="commentaires">
-              <article className="post">
-                <p>Posté par Romano :</p>
-                <p>"super méga menhir de la mort of ze dead"</p>
-              </article>
-              <article className="post">
-                <p>Posté par Alex :</p>
-                <p>"ouai mon chat c'est super méga vrai d'abooooord"</p>
-              </article>
+              {isConnected &&
+                siteData.posts &&
+                siteData.posts.map((post, index) => (
+                  <article key={index} className="post">
+                    <p>Posté par {post.poster} :</p>
+                    <p>"{post.message}"</p>
+                  </article>
+                ))}
               {isConnected && (
                 <form id="postWriting" onSubmit={(e) => handlePostSubmit(e)}>
                   <label htmlFor="postWriter">
